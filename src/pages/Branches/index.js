@@ -34,146 +34,215 @@ import { isEmpty } from "lodash";
 const branchesData = [
     {
         id: 1,
-        branchName: "Mumbai Central Branch",
-        area: "Churchgate",
-        phone: "+91 9820456789",
-        email: "mumbai.central@example.com",
-        address1: "123 Marine Drive",
-        address2: "Opp. Churchgate Station",
-        city: "Mumbai",
-        state: "Maharashtra",
-        zip: "400020",
+        branchName: "SNAAP ORAL DIAGNOSIS AND RADIOLOGY CENTRE",
+        area: "Lal Darwaja",
+        phone: "+91 93131 51637",
+        address1: "A-108, Millenium Point, Lal Darwaja Station Rd",
+        address2: "opp. Gabani hospital",
+        city: "Surat",
+        state: "Gujarat",
+        zip: "395003",
         country: "India",
-        latitude: "18.9388",
-        longitude: "72.8354"
+        latitude: "21.323585382014564",
+        longitude: "72.85372149153386",
     },
     {
         id: 2,
-        branchName: "Bangalore Tech Park",
-        area: "Tech Park",
-        phone: "+91 9988776655",
-        email: "blore.tech@example.com",
-        address1: "Sigma Soft Tech Park",
-        address2: "Whitefield Main Road",
-        city: "Bengaluru",
-        state: "Karnataka",
-        zip: "560066",
+        branchName: "SNAAP ORAL DIAGNOSIS AND RADIOLOGY CENTRE",
+        area: "Athwa",
+        phone: "+91 94296 77150",
+        address1: "3rd Floor, Maher Park-A, 37, Ring Rd",
+        address2: "near Lucky Book store, above Desai Metropolis, Athwa",
+        city: "Surat",
+        state: "Gujarat",
+        zip: "395001",
         country: "India",
-        latitude: "12.9716",
-        longitude: "77.5946"
+        latitude: "21.29287950702769",
+        longitude: "72.82076250771047",
     },
     {
         id: 3,
-        branchName: "Chennai Office",
-        phone: "+91 9876543210",
-        email: "chennai.office@example.com",
-        address1: "Old No. 12, New No. 45",
-        address2: "Mount Road",
-        city: "Chennai",
-        state: "Tamil Nadu",
-        zip: "600002",
+        branchName: "SNAAP ORAL DIAGNOSIS AND RADIOLOGY CENTRE",
+        area: "Adajan",
+        phone: "+91 63527 66065",
+        address1: "Millionaire Business Park, 106",
+        address2: "Opp, Subhash Chandra Bose Marg, TGB, Adajan",
+        city: "Surat",
+        state: "Gujarat",
+        zip: "395009",
         country: "India",
-        latitude: "13.0827",
-        longitude: "80.2707"
+        latitude: "21.29287950702769",
+        longitude: "72.7713240319754",
     },
     {
         id: 4,
-        branchName: "Hyderabad Hub",
-        phone: "+91 9012345678",
+        branchName: "Snaap Oral Diagnosis & Radiology Centre LLP",
+        area: "Althan",
+        phone: "",
         email: "hyd.hub@example.com",
-        address1: "Mindspace IT Park",
-        address2: "Hitech City",
-        city: "Hyderabad",
-        state: "Telangana",
-        zip: "500081",
+        address1: "1rd floor, blue arc complex, VIP Rd",
+        address2: "near Althan - Sarsana Road, Althan",
+        city: "Surat",
+        state: "Gujarat",
+        zip: "395007",
         country: "India",
-        latitude: "17.3850",
-        longitude: "78.4867"
+        latitude: "21.267286377320417",
+        longitude: "72.80428301579879",
     },
     {
         id: 5,
-        branchName: "Delhi NCR Branch",
-        phone: "+91 8447001122",
-        email: "delhi.ncr@example.com",
-        address1: "DLF Cyber City",
-        address2: "Sector 24",
-        city: "Gurugram",
-        state: "Haryana",
-        zip: "122002",
+        branchName: "SNAAP ORAL DIAGNOSIS AND RADIOLOGY CENTER VESU",
+        area: "Vesu",
+        phone: "+91 63527 57631",
+        address1: "Trinity Orion, 201",
+        address2: "Vesu Main Road, Vesu",
+        city: "Surat",
+        state: "Gujarat",
+        zip: "395007",
         country: "India",
-        latitude: "28.4595",
-        longitude: "77.0266"
+        latitude: "21.246808669039474",
+        longitude: "72.74935137609314"
     },
     {
         id: 6,
-        branchName: "Pune Corporate Office",
-        phone: "+91 9561234567",
-        email: "pune.corp@example.com",
-        address1: "EON IT Park",
-        address2: "Kharadi",
-        city: "Pune",
-        state: "Maharashtra",
-        zip: "411014",
+        branchName: "SNAAP ORAL DIAGNOSIS AND RADIOLOGY CENTRE SARTHANA",
+        area: "Sarthana",
+        phone: "+91 63549 47340",
+        address1: "Rise On Plaza, 224",
+        address2: "near Sarthana Jakat Naka",
+        city: "Surat",
+        state: "Gujarat",
+        zip: "395013",
         country: "India",
-        latitude: "18.5524",
-        longitude: "73.9409"
+        latitude: "21.33381924686161",
+        longitude: "72.9086531312395"
     },
     {
         id: 7,
-        branchName: "Ahmedabad Support Center",
-        phone: "+91 9324567890",
-        email: "ahm.support@example.com",
-        address1: "S.G. Highway",
-        address2: "Thaltej",
-        city: "Ahmedabad",
+        branchName: "SNAAP ORAL DIAGNOSIS AND RADIOLOGY CENTRE",
+        area: "Navsari",
+        phone: "",
+        address1: "WWX9+RVC, Sandhkuva",
+        address2: "Udyog Nagar, Vejalpore",
+        city: "Navsari",
         state: "Gujarat",
-        zip: "380059",
+        zip: "396445",
         country: "India",
-        latitude: "23.0225",
-        longitude: "72.5714"
+        latitude: "20.965593720139175",
+        longitude: "72.92032614039391"
     },
     {
         id: 8,
-        branchName: "Kolkata Branch",
-        phone: "+91 9090909090",
-        email: "kolkata.branch@example.com",
-        address1: "Salt Lake Sector V",
-        address2: "Near Wipro",
-        city: "Kolkata",
-        state: "West Bengal",
-        zip: "700091",
+        branchName: "SNAAP ORAL DIAGNOSIS AND RADIOLOGY CENTRE, VADODARA",
+        area: "Race Course Road",
+        phone: "+91 70965 55589",
+        address1: "327, Trivia",
+        address2: "Near, Race Course Road, Natubhai Cir",
+        city: "Vadodara",
+        state: "Gujarat",
+        zip: "390007",
         country: "India",
-        latitude: "22.5726",
-        longitude: "88.3639"
+        latitude: "22.433388292489944",
+        longitude: "73.17079302388392"
     },
     {
         id: 9,
-        branchName: "Jaipur Office",
-        phone: "+91 9812312345",
-        email: "jaipur.office@example.com",
-        address1: "C-Scheme",
-        address2: "Ashok Marg",
-        city: "Jaipur",
-        state: "Rajasthan",
-        zip: "302001",
+        branchName: "Snaap Oral Diagnosis & radiology Centre",
+        area: "Maninagar",
+        phone: "+91 98793 00703",
+        address1: "Prankunj Society",
+        address2: "Pushpkunj, Maninagar",
+        city: "Ahmedabad",
+        state: "Gujarat",
+        zip: "380008",
         country: "India",
-        latitude: "26.9124",
-        longitude: "75.7873"
+        latitude: "23.112087260983426",
+        longitude: "72.61598346285689"
     },
     {
         id: 10,
-        branchName: "Lucknow Regional Center",
-        phone: "+91 9456781234",
-        email: "lucknow.rc@example.com",
-        address1: "Gomti Nagar",
-        address2: "Vibhuti Khand",
-        city: "Lucknow",
-        state: "Uttar Pradesh",
-        zip: "226010",
+        branchName: "SNAAP Centre",
+        area: "Paldi",
+        phone: "+91 94296 77152",
+        address1: "F-104, Sahajanand Plaza, Beside Utsav Restaurant, above Fashion House",
+        address2: "opp. Zalak Complex, Bhatta, Paldi",
+        city: "Ahmedabad",
+        state: "Gujarat",
+        zip: "380007",
         country: "India",
-        latitude: "26.8467",
-        longitude: "80.9462"
-    }
+        latitude: "23.10703489039966",
+        longitude: "72.54457233123955"
+    },
+    {
+        id: 11,
+        branchName: "Snaap Oral Diagnosis Centre",
+        area: "Rajkot",
+        phone: "",
+        address1: "202-5, Street No.4, near Kalrav Children Hospital",
+        address2: "New College Wadi, Mahavir Park",
+        city: "Rajkot",
+        state: "Gujarat",
+        zip: "360005",
+        country: "India",
+        latitude: "22.392762652774564",
+        longitude: "70.74830771286493"
+    },
+    {
+        id: 12,
+        branchName: "SNAAP ORAL DIAGNOSIS AND RADIOLOGY CENTRE",
+        area: "Karelibagh",
+        phone: "+91 70965 55591",
+        address1: "ADITI COMPLEX, AMITNAGAR CIRCLE",
+        address2: "VIP Rd, Karelibagh",
+        city: "Vadodara",
+        state: "Gujarat",
+        zip: "390018",
+        country: "India",
+        latitude: "22.433388292489944",
+        longitude: "73.22572466358955"
+    },
+    {
+        id: 13,
+        branchName: "SNAAP Oral Diagnosis & Radiology Centre - MOTERA",
+        area: "Motera",
+        phone: "",
+        address1: "Shukan Mall, 45, GANDHI NAGAR ROAD",
+        address2: "Rangjyot Society, Parvati Nagar, Chandkheda",
+        city: "Ahmedabad",
+        state: "Gujarat",
+        zip: "380005",
+        country: "India",
+        latitude: "23.112201427326987",
+        longitude: "72.59286043850545"
+    },
+    {
+        id: 14,
+        branchName: "Snaap Imaging Centre",
+        area: "Bharuch",
+        phone: "+91 63549 61652",
+        address1: "Shop no.9, status hub , falshruti nagar",
+        address2: "near ami laboratory, Patel Super Market, B/h",
+        city: "Bharuch",
+        state: "Gujarat",
+        zip: "392001",
+        country: "India",
+        latitude: "21.720089647763373",
+        longitude: "72.99694598589022"
+    },
+    {
+        id: 15,
+        branchName: "SNAAP Oral",
+        area: "Satellite",
+        phone: "+91 83202 12924",
+        address1: "Mansi Cross Road, Shop No. 129, Sunrise Mall",
+        address2: "above Bata Showroom, Satellite",
+        city: "Ahmedabad",
+        state: "Gujarat",
+        zip: "380015",
+        country: "India",
+        latitude: "23.04271473818183",
+        longitude: "72.52900240734763",
+    },
 ];
 
 const Branches = () => {
@@ -186,7 +255,7 @@ const Branches = () => {
     const [isEdit, setIsEdit] = useState(false);
     const [initialValues, setInitialValues] = useState({
         branchName: "",
-        email: "",
+        area: "",
         phone: "",
         address1: "",
         address2: "",
@@ -205,7 +274,7 @@ const Branches = () => {
         enableReinitialize: true,
         initialValues: initialValues || {
             branchName: "",
-            email: "",
+            area: "",
             phone: "",
             address1: "",
             address2: "",
@@ -293,15 +362,6 @@ const Branches = () => {
                 ),
             },
             {
-                Header: "Email",
-                accessor: "email",
-                Cell: ({ value }) => (
-                    <a href={`mailto:${value}`} className="text-muted">
-                        {value}
-                    </a>
-                ),
-            },
-            {
                 Header: "Address Line 1",
                 accessor: "address1",
                 Cell: ({ value }) => <span>{value}</span>,
@@ -332,20 +392,6 @@ const Branches = () => {
                 Cell: ({ value }) => <span>{value}</span>,
             },
             {
-                Header: "Latitude",
-                accessor: "latitude",
-                Cell: ({ value }) => (
-                    <code className="text-success small">{value}</code>
-                ),
-            },
-            {
-                Header: "Longitude",
-                accessor: "longitude",
-                Cell: ({ value }) => (
-                    <code className="text-success small">{value}</code>
-                ),
-            },
-            {
                 Header: "Action",
                 Cell: (cellProps) => {
                     const row = cellProps.row.original;
@@ -357,7 +403,7 @@ const Branches = () => {
                             >
                                 <i
                                     className="mdi mdi-pencil-outline"
-                                    style={{ color: "green", fontSize: "20px" }}
+                                    style={{ fontSize: "20px" }}
                                 ></i>
                             </button>
                             <button
@@ -365,7 +411,7 @@ const Branches = () => {
                                 onClick={() => onClickDelete(row)}
                             >
                                 <i className="mdi mdi-delete-outline"
-                                style={{ color: "red", fontSize: "20px" }}></i>
+                                    style={{ fontSize: "20px" }}></i>
                             </button>
                         </div>
                     );

@@ -303,7 +303,7 @@ const branchesData = [
 
 
 const Reports = () => {
-    document.title = "Reports | SNAAP - Radiology & Diagnostic Centers";
+    document.title = "Snaap Reports | SNAAP - Radiology & Diagnostic Centers";
 
     const navigate = useNavigate();
 
@@ -424,7 +424,7 @@ const Reports = () => {
                             >
                                 <i
                                     className="mdi mdi-pencil-outline"
-                                    style={{ color: "green", fontSize: "20px" }}
+                                    style={{ fontSize: "20px" }}
                                 ></i>
                             </button>
                             <button
@@ -432,7 +432,7 @@ const Reports = () => {
                                 onClick={() => onClickDelete(row)}
                             >
                                 <i className="mdi mdi-delete-outline"
-                                    style={{ color: "red", fontSize: "20px" }}></i>
+                                    style={{ fontSize: "20px" }}></i>
                             </button>
                         </div>
                     );

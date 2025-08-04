@@ -7,7 +7,7 @@ const Breadcrumb = props => {
 
   const navigate = useNavigate()
   return (
-    <Row>
+    <Row style={{ marginBottom: "-1.5%" }}>
       <Col xs="12">
         <div className="page-title-box d-sm-flex align-items-center justify-content-between">
           <h4 className="mb-0 font-size-18">{props.breadcrumbItem}</h4>

@@ -198,7 +198,7 @@ const TableContainer = ({
                         {column.render("Header")}
                         {generateSortingIndicator(column)}
                       </div>
-                      <Filter column={column} />
+                      {/* <Filter column={column} /> */}
                     </th>
                   ))}
                 </tr>

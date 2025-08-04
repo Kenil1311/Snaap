@@ -12,15 +12,14 @@ const Footer = () => {
             <Col md={6}>
               <div className="text-sm-end d-none d-sm-block">
                 Design & Develop by
-                <Link to="#" className="ms-1 text-decoration-underline">
-                  Softnoesis Pvt. Ltd.
-                </Link>
+                <a href="https://www.softnoesis.com/" target="_blank" title="Softnoesis Pvt. Ltd." rel="noreferrer"> Softnoesis</a>
+
               </div>
             </Col>
           </Row>
         </Container>
-      </footer>
-    </React.Fragment>
+      </footer >
+    </React.Fragment >
   )
 }
 

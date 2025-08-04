@@ -150,7 +150,7 @@ const Sagment = () => {
                             >
                                 <i
                                     className="mdi mdi-pencil-outline"
-                                    style={{ color: "green", fontSize: "20px" }}
+                                    style={{ fontSize: "20px" }}
                                 ></i>
                             </button>
                             <button
@@ -158,7 +158,7 @@ const Sagment = () => {
                                 onClick={() => onClickDelete(row)}
                             >
                                 <i className="mdi mdi-delete-outline"
-                                    style={{ color: "red", fontSize: "20px" }}></i>
+                                    style={{ fontSize: "20px" }}></i>
                             </button>
                         </div>
                     );

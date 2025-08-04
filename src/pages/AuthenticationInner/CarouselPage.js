@@ -29,7 +29,7 @@ const items = [
         img: null,
         name: null,
         designation: null,
-        description: "With the intuition of a seasoned assistant and the foresight of tomorrow, our AI-powered interface gently guides users like a GPS through a vast city of radiology data—eliminating complexity, learning from usage patterns, predicting next steps, and delivering effortless navigation with the grace of a trusted co-pilot in your diagnostic journey."
+        description: "Our AI-powered interface is like a GPS for radiology. It guides you through complex data, adapts to your habits, predicts what you need next, and helps you navigate with ease and confidence."
     }
 ];
 

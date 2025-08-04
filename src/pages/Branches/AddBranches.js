@@ -162,7 +162,7 @@ export default function AddBranches() {
     const [isEdit, setIsEdit] = useState(false);
     const [initialValues, setInitialValues] = useState({
         branchName: "",
-        email: "",
+        area: "",
         phone: "",
         address1: "",
         address2: "",

@@ -41,8 +41,8 @@ const Register = props => {
     enableReinitialize: true,
 
     initialValues: {
-      email: '',
-      username: 'admin@themesbrand.com' || '',
+      email: 'admin@snaap.com' || '',
+      username: 'admin' || '',
       password: '123456' || '',
     },
     validationSchema: Yup.object({
@@ -77,7 +77,7 @@ const Register = props => {
                     <div className="auth-content my-auto">
                       <div className="text-center">
                         <h5 className="mb-0">Register Account</h5>
-                        <p className="text-muted mt-2">Get your free SNAAP account now.</p>
+                        <p className="text-muted mt-2">Get your SNAAP account now.</p>
                       </div>
 
                       <Form
@@ -178,7 +178,7 @@ const Register = props => {
                       </div>
                     </div>
                     <div className="mt-4 mt-md-5 text-center">
-                      <p className="mb-0">© {new Date().getFullYear()} SNAAP. Design & Developed by <a href="https://www.softnoesis.com/" target="_blank" title="Softnoesis Pvt. Ltd." rel="noreferrer">Softnoesis Pvt. Ltd.</a></p>
+                      <p className="mb-0">© {new Date().getFullYear()} SNAAP. Design & Developed by <a href="https://www.softnoesis.com/" target="_blank" title="Softnoesis Pvt. Ltd." rel="noreferrer">Softnoesis</a></p>
                     </div>
                   </div>
                 </div>

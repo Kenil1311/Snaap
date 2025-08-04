@@ -44,7 +44,7 @@ const Login = props => {
     enableReinitialize: true,
 
     initialValues: {
-      email: "admin@themesbrand.com" || '',
+      email: "admin@snaap.com" || '',
       password: "123456" || '',
     },
     validationSchema: Yup.object({
@@ -65,7 +65,7 @@ const Login = props => {
     signIn(type);
   };
 
-  document.title = "Login | SNAAP - React Admin & Dashboard Template";
+  document.title = "Login | SNAAP - Radiology & Diagnostic Centers";
 
   return (
     <React.Fragment>
@@ -180,7 +180,7 @@ const Login = props => {
                       </div>
                     </div>
                     <div className="mt-4 mt-md-5 text-center">
-                      <p className="mb-0">© {new Date().getFullYear()} SNAAP. Design & Developed by <a href="https://www.softnoesis.com/" title="Softnoesis Pvt. Ltd." target="_blank" rel="noreferrer">Softnoesis Pvt. Ltd.</a></p>
+                      <p className="mb-0">© {new Date().getFullYear()} SNAAP. Design & Developed by <a href="https://www.softnoesis.com/" title="Softnoesis Pvt. Ltd." target="_blank" rel="noreferrer">Softnoesis</a></p>
                     </div>
                   </div>
                 </div>
