@@ -18,7 +18,7 @@ const FilterSidebar = ({ isOpen, onClose, onApply }) => {
     ];
 
     const sagmentOptions = [
-        { label: "DICOM", value: "dicom" },
+        { label: "CBCT", value: "cbct" },
         { label: "OPG", value: "opg" }
     ];
 

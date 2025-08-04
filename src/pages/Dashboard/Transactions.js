@@ -141,7 +141,7 @@ const Transactions = () => {
                                                     <td>
                                                         <div className="text-end">
                                                             <h5 className="font-size-14 mb-0">{branch?.dicomReports}</h5>
-                                                            <p className="text-muted mb-0 font-size-12">DICOM</p>
+                                                            <p className="text-muted mb-0 font-size-12">CBCT</p>
                                                         </div>
                                                     </td>
 

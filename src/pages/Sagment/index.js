@@ -34,7 +34,7 @@ import { isEmpty } from "lodash";
 const dummySegments = [
     {
         id: 1,
-        name: "DICOM",
+        name: "CBCT",
         description: "",
         createdBy: "Admin",
         createdAt: "2024-01-10T10:00:00Z",

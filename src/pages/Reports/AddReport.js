@@ -363,7 +363,7 @@ export default function AddReport() {
                                                 </DropdownToggle>
 
                                                 <DropdownMenu className="w-100 shadow-sm mt-1 border rounded">
-                                                    {["DICOM", "OPG"].map((sagment) => (
+                                                    {["CBCT", "OPG"].map((sagment) => (
                                                         <DropdownItem
                                                             key={sagment}
                                                             onClick={() => validation.setFieldValue("segment", sagment)}

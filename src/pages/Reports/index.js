@@ -41,7 +41,7 @@ const patientsData = [
         studyDate: "2025-07-15",
         modality: "MRI",
         description: "Brain MRI for persistent headaches",
-        segment: "DICOM",
+        segment: "CBCT",
         age: 40,
         branch: "Mumbai Central Branch"
     },
@@ -65,7 +65,7 @@ const patientsData = [
         studyDate: "2025-07-10",
         modality: "X-ray",
         description: "Chest X-ray for routine checkup",
-        segment: "DICOM",
+        segment: "CBCT",
         age: 46,
         branch: "Hyderabad Hub"
     },
@@ -89,7 +89,7 @@ const patientsData = [
         studyDate: "2025-07-25",
         modality: "PET",
         description: "PET scan for metabolic activity",
-        segment: "DICOM",
+        segment: "CBCT",
         age: 29,
         branch: "Ahmedabad Support Center"
     },
@@ -113,7 +113,7 @@ const patientsData = [
         studyDate: "2025-07-14",
         modality: "MRI",
         description: "Knee MRI due to sports injury",
-        segment: "DICOM",
+        segment: "CBCT",
         age: 42,
         branch: "Bangalore Tech Park"
     },
@@ -137,7 +137,7 @@ const patientsData = [
         studyDate: "2025-07-29",
         modality: "CT",
         description: "CT angiography for chest pain",
-        segment: "DICOM",
+        segment: "CBCT",
         age: 49,
         branch: "Pune Corporate Office"
     },
@@ -380,7 +380,7 @@ const Reports = () => {
             {
                 Header: "Segment",
                 accessor: "segment",
-                Cell: ({ value }) => <span className={`badge ${value == "DICOM" ? 'bg-secondary' : 'bg-warning'} p-1`}>{value}</span>,
+                Cell: ({ value }) => <span className={`badge ${value == "CBCT" ? 'bg-secondary' : 'bg-warning'} p-1`}>{value}</span>,
             },
             {
                 Header: "Name",
