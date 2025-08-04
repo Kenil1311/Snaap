@@ -13,6 +13,7 @@ L.Icon.Default.mergeOptions({
 });
 
 const Locations = (props) => {
+
     const [selected, setSelected] = useState(null);
 
     const branchesData = [
@@ -229,19 +230,6 @@ const Locations = (props) => {
         },
     ];
 
-    const markers = [
-        { lat: 28.6139, lng: 77.2090, name: "Delhi" },
-        { lat: 19.0760, lng: 72.8777, name: "Mumbai" },
-        { lat: 13.0827, lng: 80.2707, name: "Chennai" },
-        { lat: 22.5726, lng: 88.3639, name: "Kolkata" },
-        { lat: 12.9716, lng: 77.5946, name: "Bangalore" },
-        { lat: 21.1702, lng: 72.8311, name: "Surat - City Center" },
-        { lat: 21.2096, lng: 72.8570, name: "Surat - Adajan" },
-        { lat: 23.0225, lng: 72.5714, name: "Ahmedabad" },
-        { lat: 22.3072, lng: 73.1812, name: "Vadodara" },
-        { lat: 21.5222, lng: 70.4579, name: "Rajkot" },
-        { lat: 20.5883, lng: 72.9289, name: "Valsad" },
-    ];
 
     return (
         <Col xl={12}>
@@ -253,8 +241,8 @@ const Locations = (props) => {
 
                     <div style={{ height: '500px', width: props.width || '100%' }}>
                         <MapContainer
-                            center={[22.9734, 78.6569]} // Center of India
-                            zoom={5}
+                            center={[22.340111703767448, 72.5045502340445]} // Center of India
+                            zoom={7}
                             style={{ height: "100%", width: "100%" }}
                         >
                             <TileLayer

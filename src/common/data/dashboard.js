@@ -2,7 +2,7 @@ const WidgetsData = [
     {
         id: 1,
         title: "Number of Branches",
-        price: 20,
+        price: 15,
         rank: "20",
         isDoller: false,
         postFix: "",
@@ -12,7 +12,7 @@ const WidgetsData = [
     {
         id: 2,
         title: "Number of Reports",
-        price: 6258,
+        price: 10,
         rank: "-29 Trades",
         isDoller: false,
         statusColor: "danger",
@@ -21,7 +21,7 @@ const WidgetsData = [
     {
         id: 3,
         title: "Number of Patients",
-        price: 432,
+        price: 10,
         rank: "+$2.8k",
         isDoller: true,
         // postFix: "M",
