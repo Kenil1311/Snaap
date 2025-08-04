@@ -15,7 +15,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 
 const MapsLeaflet = () => {
   //meta title
-  document.title = "Leaflet | Minia - React Admin & Dashboard Template";
+  document.title = "Leaflet | SNAAP - React Admin & Dashboard Template";
   return (
     <React.Fragment>
       <div className="page-content">

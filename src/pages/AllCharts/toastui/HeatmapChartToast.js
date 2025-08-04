@@ -13,7 +13,7 @@ const theme = {
     }
   }
 }
-TuiChart.registerTheme("miniaTheme", theme)
+TuiChart.registerTheme("SNAAPTheme", theme)
 
 const HeatmapChartToast = props => {
   const data = {
@@ -61,7 +61,7 @@ const HeatmapChartToast = props => {
       width: props.chartWidth,
       height: 450,
     },
-    theme: "miniaTheme",
+    theme: "SNAAPTheme",
     yAxis: {
       title: "City",
     },

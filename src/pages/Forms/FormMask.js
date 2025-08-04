@@ -75,7 +75,7 @@ const FormMask = () => {
 
 
   //meta title
-  document.title = "Form Mask | Minia - React Admin & Dashboard Template";
+  document.title = "Form Mask | SNAAP - React Admin & Dashboard Template";
 
   return (
     <React.Fragment>

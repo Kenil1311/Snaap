@@ -21,7 +21,7 @@ import { createSelector } from "reselect";
 const Register = props => {
 
   //meta title
-  document.title = "Register | Minia - React Admin & Dashboard Template";
+  document.title = "Register | SNAAP - React Admin & Dashboard Template";
 
   const dispatch = useDispatch()
 

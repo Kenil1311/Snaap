@@ -52,7 +52,7 @@ const UiOffCanvas = () => {
     };
 
     //meta title
-    document.title = "OffCancas | Minia - React Admin & Dashboard Template";
+    document.title = "OffCancas | SNAAP - React Admin & Dashboard Template";
 
     return (
         <React.Fragment>

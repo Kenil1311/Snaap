@@ -155,7 +155,7 @@ export default function AddBranches() {
 
     const navigate = useNavigate();
 
-    document.title = "User List | Minia - React Admin & Dashboard Template";
+    document.title = "User List | SNAAP - React Admin & Dashboard Template";
 
     const [contact, setContact] = useState();
     const [modal, setModal] = useState(false);

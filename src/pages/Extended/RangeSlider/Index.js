@@ -4,7 +4,7 @@ import ColorScheme from './ColorScheme';
 import { Breadcrumb, Container } from 'reactstrap';
 
 const RangeSlider = () => {
-    document.title = "Range Slider | Minia - React Admin & Dashboard Template";
+    document.title = "Range Slider | SNAAP - React Admin & Dashboard Template";
     return (
         <React.Fragment>
             <div className="page-content">

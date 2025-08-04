@@ -39,7 +39,7 @@ const CardInvoice = ({ data }) => {
                     {data.founder}
                   </h5>
                   <Link to="#" className="text-muted">
-                    @Minia
+                    @SNAAP
                   </Link>
                 </div>
               </Col>

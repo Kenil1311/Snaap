@@ -27,7 +27,7 @@ var theme = {
     borderColor: "#F4511E",
   },
 }
-TuiChart.registerTheme("miniaTheme", theme)
+TuiChart.registerTheme("SNAAPTheme", theme)
 
 const MapChartToast = () => {
   const data = {

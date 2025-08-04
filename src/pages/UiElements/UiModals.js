@@ -96,7 +96,7 @@ const UiModal = () => {
   }
 
   //meta title
-  document.title = "Modals | Minia - React Admin & Dashboard Template";
+  document.title = "Modals | SNAAP - React Admin & Dashboard Template";
 
   return (
     <React.Fragment>

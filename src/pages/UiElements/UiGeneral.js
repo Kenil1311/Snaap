@@ -25,7 +25,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 const UiGeneral = () => {
 
   //meta title
-  document.title = "General | Minia - React Admin & Dashboard Template";
+  document.title = "General | SNAAP - React Admin & Dashboard Template";
 
   const [popovertop, setpopovertop] = useState(false);
   const [popoverleft, setpopoverleft] = useState(false);

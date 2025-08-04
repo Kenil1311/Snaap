@@ -10,7 +10,7 @@ const PageRegister = () => {
 
     let year = new Date().getFullYear();
     //meta title
-    document.title = "Register | Minia - React Admin & Dashboard Template";
+    document.title = "Register | SNAAP - React Admin & Dashboard Template";
     return (
         <React.Fragment>
             <div className="auth-page">
@@ -22,13 +22,13 @@ const PageRegister = () => {
                                     <div className="d-flex flex-column h-100">
                                         <div className="mb-4 mb-md-5 text-center">
                                             <Link to="/dashboard" className="d-block auth-logo">
-                                                <img src={logo} alt="" height="28" /> <span className="logo-txt">Minia</span>
+                                                <img src={logo} alt="" height="28" /> <span className="logo-txt">SNAAP</span>
                                             </Link>
                                         </div>
                                         <div className="auth-content my-auto">
                                             <div className="text-center">
                                                 <h5 className="mb-0">Register Account</h5>
-                                                <p className="text-muted mt-2">Get your free Minia account now.</p>
+                                                <p className="text-muted mt-2">Get your free SNAAP account now.</p>
                                             </div>
                                             <form className="needs-validation custom-form mt-4 pt-2" action="/dashboard">
                                                 <div className="mb-3">
@@ -60,7 +60,7 @@ const PageRegister = () => {
                                                     </div>
                                                 </div>
                                                 <div className="mb-4">
-                                                    <p className="mb-0">By registering you agree to the Minia <Link to="#" className="text-primary">Terms of Use</Link></p>
+                                                    <p className="mb-0">By registering you agree to the SNAAP <Link to="#" className="text-primary">Terms of Use</Link></p>
                                                 </div>
                                                 <div className="mb-3">
                                                     <button className="btn btn-primary w-100 waves-effect waves-light" type="submit">Register</button>
@@ -100,7 +100,7 @@ const PageRegister = () => {
                                             </div>
                                         </div>
                                         <div className="mt-4 mt-md-5 text-center">
-                                            <p className="mb-0">© {year} Minia   . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                                            <p className="mb-0">© {year} SNAAP   . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
                                         </div>
                                     </div>
                                 </div>

@@ -51,7 +51,7 @@ import { createSelector } from "reselect";
 const Chat = props => {
 
   //meta title
-  document.title = "Chat | Minia - React Admin & Dashboard Template";
+  document.title = "Chat | SNAAP - React Admin & Dashboard Template";
 
   const dispatch = useDispatch();
 

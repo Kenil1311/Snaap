@@ -16,7 +16,7 @@ import { Link } from "react-router-dom"
 const InvoiceDetail = props => {
 
   //meta title
-  document.title = "Invoice Detail | Minia - React Admin & Dashboard Template";
+  document.title = "Invoice Detail | SNAAP - React Admin & Dashboard Template";
 
   const dispatch = useDispatch()
 
@@ -62,7 +62,7 @@ const InvoiceDetail = props => {
                       <div className="d-flex align-items-start">
                         <div className="flex-grow-1">
                           <div className="mb-4">
-                            <img src={logo} alt="" height="24" /><span className="logo-txt">Minia</span>
+                            <img src={logo} alt="" height="24" /><span className="logo-txt">SNAAP</span>
                           </div>
                         </div>
                         <div className="flex-shrink-0">

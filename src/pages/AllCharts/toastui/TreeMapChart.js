@@ -33,7 +33,7 @@ const theme = {
     }
   }
 }
-TuiChart.registerTheme("miniaTheme", theme)
+TuiChart.registerTheme("SNAAPTheme", theme)
 
 const TreeMapChartToast = props => {
   const data = {

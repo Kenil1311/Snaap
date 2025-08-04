@@ -46,7 +46,7 @@ const theme = {
   }
 }
 
-TuiChart.registerTheme("miniaTheme", theme)
+TuiChart.registerTheme("SNAAPTheme", theme)
 
 const LineChartToast = props => {
   const data = {

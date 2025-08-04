@@ -9,7 +9,7 @@ import Breadcrumbs from "../../../components/Common/Breadcrumb";
 
 const ContactsProfile = (props) => {
   //meta title
-  document.title = "Profile | Minia - React Admin & Dashboard Template";
+  document.title = "Profile | SNAAP - React Admin & Dashboard Template";
   return (
     <React.Fragment>
       <div className="page-content">

@@ -48,7 +48,7 @@ const theme = {
     borderColor: "#F4511E"
   }
 }
-TuiChart.registerTheme("miniaTheme", theme)
+TuiChart.registerTheme("SNAAPTheme", theme)
 
 const ProfileMenu = props => {
   const data = {

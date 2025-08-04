@@ -14,7 +14,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 
 const MapsVector = () => {
   //meta title
-  document.title = "Vector | Minia - React Admin & Dashboard Template";
+  document.title = "Vector | SNAAP - React Admin & Dashboard Template";
   return (
     <React.Fragment>
       <div className="page-content">

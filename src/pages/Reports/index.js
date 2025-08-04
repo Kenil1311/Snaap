@@ -303,7 +303,7 @@ const branchesData = [
 
 
 const Reports = () => {
-    document.title = "User List | Minia - React Admin & Dashboard Template";
+    document.title = "User List | SNAAP - React Admin & Dashboard Template";
 
     const navigate = useNavigate();
 

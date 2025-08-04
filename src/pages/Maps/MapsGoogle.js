@@ -24,7 +24,7 @@ const second = {
 const MapsGoogle = (props) => {
 
   //meta title
-  document.title = "Google | Minia - React Admin & Dashboard Template";
+  document.title = "Google | SNAAP - React Admin & Dashboard Template";
 
   const selectedPlace = {}
 

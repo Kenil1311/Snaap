@@ -33,7 +33,7 @@ import { createSelector } from "reselect";
 const UserProfile = props => {
 
   //meta title
-  document.title = "Profile | Minia - React Admin & Dashboard Template";
+  document.title = "Profile | SNAAP - React Admin & Dashboard Template";
 
   const dispatch = useDispatch()
 
@@ -94,7 +94,7 @@ const UserProfile = props => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumb */}
-          <Breadcrumb title="Minia" breadcrumbItem="Profile" />
+          <Breadcrumb title="SNAAP" breadcrumbItem="Profile" />
 
           <Row>
             <Col lg="12">

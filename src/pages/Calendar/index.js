@@ -51,7 +51,7 @@ import { createSelector } from "reselect";
 const Calender = (props) => {
 
   //meta title
-  document.title = "Calendar | Minia - React Admin & Dashboard Template";
+  document.title = "Calendar | SNAAP - React Admin & Dashboard Template";
 
   const dispatch = useDispatch();
 

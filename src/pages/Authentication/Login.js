@@ -65,7 +65,7 @@ const Login = props => {
     signIn(type);
   };
 
-  document.title = "Login | Minia - React Admin & Dashboard Template";
+  document.title = "Login | SNAAP - React Admin & Dashboard Template";
 
   return (
     <React.Fragment>

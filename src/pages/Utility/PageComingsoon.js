@@ -127,7 +127,7 @@ const PagesComingsoon = () => {
 
 
   //meta title
-  document.title = "Coming Soon | Minia - React Admin & Dashboard Template";
+  document.title = "Coming Soon | SNAAP - React Admin & Dashboard Template";
 
   return (
     <React.Fragment>
@@ -149,12 +149,12 @@ const PagesComingsoon = () => {
                   <a href="index.html">
                     <img src={logo} alt="logo" height="30" className="me-1" />
                     <span className="logo-txt text-white font-size-22">
-                      Minia
+                      SNAAP
                     </span>
                   </a>
                 </div>
                 <h3 className="text-white mt-5">
-                  Let&apos;s get started with Minia
+                  Let&apos;s get started with SNAAP
                 </h3>
                 <p className="text-white-50 font-size-16">
                   Donec pede justo fringilla vel aliquet nec vulputate eget

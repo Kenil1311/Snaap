@@ -14,7 +14,7 @@ import EmailToolbar from "./email-toolbar";
 
 const EmailInbox = () => {
   //meta title
-  document.title = "Email Inbox | Minia - React Admin & Dashboard Template";
+  document.title = "Email Inbox | SNAAP - React Admin & Dashboard Template";
 
   return (
     <React.Fragment>

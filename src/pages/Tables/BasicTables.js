@@ -7,7 +7,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 const BasicTable = () => {
   //meta title
-  document.title = "Basic Tables | Minia - React Admin & Dashboard Template";
+  document.title = "Basic Tables | SNAAP - React Admin & Dashboard Template";
   return (
     <React.Fragment>
       <div className="page-content">

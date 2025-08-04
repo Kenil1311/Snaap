@@ -79,7 +79,7 @@ const options = {
 const Dashboard = () => {
 
     //meta title
-    document.title = "Dashboard | Minia - React Admin & Dashboard Template";
+    document.title = "Dashboard | SNAAP - React Admin & Dashboard Template";
 
     return (
         <React.Fragment>

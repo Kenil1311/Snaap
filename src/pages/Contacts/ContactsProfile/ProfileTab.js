@@ -36,7 +36,7 @@ const ProfileTab = () => {
 
                                                 <div className="d-flex flex-wrap align-items-start gap-2 gap-lg-3 text-muted font-size-13">
                                                     <div><i className="mdi mdi-circle-medium me-1 text-success align-middle"></i>Development</div>
-                                                    <div><i className="mdi mdi-circle-medium me-1 text-success align-middle"></i>phyllisgatlin@minia.com</div>
+                                                    <div><i className="mdi mdi-circle-medium me-1 text-success align-middle"></i>phyllisgatlin@SNAAP.com</div>
                                                 </div>
                                             </div>
                                         </div>

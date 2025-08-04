@@ -13,7 +13,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 const UiTypography = () => {
   //meta title
-  document.title = "Typography | Minia - React Admin & Dashboard Template";
+  document.title = "Typography | SNAAP - React Admin & Dashboard Template";
   return (
     <React.Fragment>
       <div className="page-content">
