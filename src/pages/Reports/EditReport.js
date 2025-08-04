@@ -441,6 +441,96 @@ export default function EditReport() {
                                 <Row>
                                     <Col md="6">
                                         <div className="mb-3">
+                                            <Label>Gender</Label>
+                                            <UncontrolledDropdown className="w-100">
+                                                <DropdownToggle
+                                                    caret
+                                                    className={`form-control custom-dropdown text-start d-flex align-items-center justify-content-between ${validation.touched.gender && validation.errors.gender ? "is-invalid" : ""}`}
+
+                                                >
+                                                    <span className="flex-grow-1 text-truncate">
+                                                        {validation.values.gender || "Select gender"}
+                                                    </span>
+                                                    <i className="mdi mdi-chevron-down"></i>
+                                                </DropdownToggle>
+
+                                                <DropdownMenu className="w-100 shadow-sm mt-1 border rounded">
+                                                    {["Male", "Female", "Other"].map((gender) => (
+                                                        <DropdownItem
+                                                            key={gender}
+                                                            onClick={() => validation.setFieldValue("gender", gender)}
+                                                            className={`text-dark rounded px-2 py-1 custom-dropdown-item ${validation.values.gender === gender ? "custom-dropdown-item-active" : ""}`}
+                                                            style={{ backgroundColor: "white" }}
+                                                        >
+                                                            {gender}
+                                                        </DropdownItem>
+                                                    ))}
+                                                </DropdownMenu>
+                                            </UncontrolledDropdown>
+
+                                            {validation.touched.gender && validation.errors.gender && (
+                                                <div className="invalid-feedback d-block">
+                                                    {validation.errors.gender}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </Col>
+                                    <Col md="6">
+                                        <div className="mb-3">
+                                            <Label>Study Date</Label>
+                                            <Input
+                                                name="studyDate"
+                                                type="date"
+                                                onChange={validation.handleChange}
+                                                onBlur={validation.handleBlur}
+                                                value={validation.values.studyDate}
+                                                invalid={validation.touched.studyDate && !!validation.errors.studyDate}
+                                            />
+                                            <FormFeedback>{validation.errors.studyDate}</FormFeedback>
+                                        </div>
+                                    </Col>
+                                </Row>
+
+                                <Row>
+                                    <Col md="12">
+                                        <div className="mb-3">
+                                            <Label>Modality</Label>
+                                            <Input
+                                                name="modality"
+                                                type="text"
+                                                placeholder="Enter modality"
+                                                onChange={validation.handleChange}
+                                                onBlur={validation.handleBlur}
+                                                value={validation.values.modality}
+                                                invalid={validation.touched.modality && !!validation.errors.modality}
+                                            />
+                                            <FormFeedback>{validation.errors.modality}</FormFeedback>
+                                        </div>
+                                    </Col>
+                                </Row>
+
+                                <Row>
+                                    <Col md="12">
+                                        <div className="mb-3">
+                                            <Label>Description</Label>
+                                            <Input
+                                                name="description"
+                                                type="textarea"
+                                                rows={4}
+                                                placeholder="Enter description"
+                                                onChange={validation.handleChange}
+                                                onBlur={validation.handleBlur}
+                                                value={validation.values.description}
+                                                invalid={validation.touched.description && !!validation.errors.description}
+                                            />
+                                            <FormFeedback>{validation.errors.description}</FormFeedback>
+                                        </div>
+                                    </Col>
+                                </Row>
+
+                                                                <Row>
+                                    <Col md="6">
+                                        <div className="mb-3">
                                             <Label>Upload File(DICOM/OPG)</Label>
                                             <Dropzone onDrop={handleAcceptedFiles}>
                                                 {({ getRootProps, getInputProps }) => (
@@ -563,96 +653,6 @@ export default function EditReport() {
                                                     </div>
                                                 )}
                                             </Dropzone>
-                                        </div>
-                                    </Col>
-                                </Row>
-                                
-                                <Row>
-                                    <Col md="6">
-                                        <div className="mb-3">
-                                            <Label>Gender</Label>
-                                            <UncontrolledDropdown className="w-100">
-                                                <DropdownToggle
-                                                    caret
-                                                    className={`form-control custom-dropdown text-start d-flex align-items-center justify-content-between ${validation.touched.gender && validation.errors.gender ? "is-invalid" : ""}`}
-
-                                                >
-                                                    <span className="flex-grow-1 text-truncate">
-                                                        {validation.values.gender || "Select gender"}
-                                                    </span>
-                                                    <i className="mdi mdi-chevron-down"></i>
-                                                </DropdownToggle>
-
-                                                <DropdownMenu className="w-100 shadow-sm mt-1 border rounded">
-                                                    {["Male", "Female", "Other"].map((gender) => (
-                                                        <DropdownItem
-                                                            key={gender}
-                                                            onClick={() => validation.setFieldValue("gender", gender)}
-                                                            className={`text-dark rounded px-2 py-1 custom-dropdown-item ${validation.values.gender === gender ? "custom-dropdown-item-active" : ""}`}
-                                                            style={{ backgroundColor: "white" }}
-                                                        >
-                                                            {gender}
-                                                        </DropdownItem>
-                                                    ))}
-                                                </DropdownMenu>
-                                            </UncontrolledDropdown>
-
-                                            {validation.touched.gender && validation.errors.gender && (
-                                                <div className="invalid-feedback d-block">
-                                                    {validation.errors.gender}
-                                                </div>
-                                            )}
-                                        </div>
-                                    </Col>
-                                    <Col md="6">
-                                        <div className="mb-3">
-                                            <Label>Study Date</Label>
-                                            <Input
-                                                name="studyDate"
-                                                type="date"
-                                                onChange={validation.handleChange}
-                                                onBlur={validation.handleBlur}
-                                                value={validation.values.studyDate}
-                                                invalid={validation.touched.studyDate && !!validation.errors.studyDate}
-                                            />
-                                            <FormFeedback>{validation.errors.studyDate}</FormFeedback>
-                                        </div>
-                                    </Col>
-                                </Row>
-
-                                <Row>
-                                    <Col md="12">
-                                        <div className="mb-3">
-                                            <Label>Modality</Label>
-                                            <Input
-                                                name="modality"
-                                                type="text"
-                                                placeholder="Enter modality"
-                                                onChange={validation.handleChange}
-                                                onBlur={validation.handleBlur}
-                                                value={validation.values.modality}
-                                                invalid={validation.touched.modality && !!validation.errors.modality}
-                                            />
-                                            <FormFeedback>{validation.errors.modality}</FormFeedback>
-                                        </div>
-                                    </Col>
-                                </Row>
-
-                                <Row>
-                                    <Col md="12">
-                                        <div className="mb-3">
-                                            <Label>Description</Label>
-                                            <Input
-                                                name="description"
-                                                type="textarea"
-                                                rows={4}
-                                                placeholder="Enter description"
-                                                onChange={validation.handleChange}
-                                                onBlur={validation.handleBlur}
-                                                value={validation.values.description}
-                                                invalid={validation.touched.description && !!validation.errors.description}
-                                            />
-                                            <FormFeedback>{validation.errors.description}</FormFeedback>
                                         </div>
                                     </Col>
                                 </Row>

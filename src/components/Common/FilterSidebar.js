@@ -5,16 +5,21 @@ import Select from "react-select"
 const FilterSidebar = ({ isOpen, onClose, onApply }) => {
 
     const branchOptions = [
-        { label: "Ahmedabad", value: "ahmedabad" },
-        { label: "Surat", value: "surat" },
-        { label: "Vadodara", value: "vadodara" },
-        { label: "Rajkot", value: "rajkot" },
-        { label: "Gandhinagar", value: "gandhinagar" },
-        { label: "Bhavnagar", value: "bhavnagar" },
-        { label: "Jamnagar", value: "jamnagar" },
-        { label: "Anand", value: "anand" },
-        { label: "Nadiad", value: "nadiad" },
-        { label: "Vapi", value: "vapi" }
+        { label: "Lal Darwaja - Surat", value: "ahmedabad" },
+        { label: "Athwa - Surat", value: "surat" },
+        { label: "Adajan - Surat", value: "vadodara" },
+        { label: "Althan - Surat", value: "rajkot" },
+        { label: "Vesu - Surat", value: "gandhinagar" },
+        { label: "Sarthana - Surat", value: "bhavnagar" },
+        { label: "Navsari", value: "jamnagar" },
+        { label: "Race Course Road - Vadodara", value: "anand" },
+        { label: "Maninagar - Ahmedabad", value: "nadiad" },
+        { label: "Paldi - Ahmedabad", value: "vapi" },
+        { label: "Rajkot", value: "Rajkot" },
+        { label: "Karelibagh - Vadodara", value: "jamnagar" },
+        { label: "Motera - Ahmedabad", value: "anand" },
+        { label: "Bharuch", value: "nadiad" },
+        { label: "Satellite - Ahmedabad", value: "vapi" }
     ];
 
     const sagmentOptions = [

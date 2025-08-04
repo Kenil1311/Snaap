@@ -265,9 +265,9 @@ const Transactions = () => {
 
     const generateMockData = () => {
         return branchesData.map(branch => ({
-            branch: `${branch.branchName} - ${branch.city}`,
+            branch: `${branch.area}`,
             phone: branch.phone || "N/A",
-            location: `${branch.area}, ${branch.city}, ${branch.state}`,
+            location: `${branch.city}, ${branch.state}`,
             dicom: Math.floor(Math.random() * 100),
             opg: Math.floor(Math.random() * 100),
         }));
