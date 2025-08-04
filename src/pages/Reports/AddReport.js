@@ -152,6 +152,8 @@ const branchesData = [
 
 export default function AddReport() {
 
+    document.title = "Add Report | SNAAP - Radiology & Diagnostic Centers";
+
     const navigate = useNavigate();
 
     const validation = useFormik({

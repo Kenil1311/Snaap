@@ -154,7 +154,8 @@ export default function EditBranches() {
 
     const navigate = useNavigate();
 
-    document.title = "User List | SNAAP - React Admin & Dashboard Template";
+    document.title = "Edit Branch | SNAAP - Radiology & Diagnostic Centers";
+    
     const location = useLocation();
     const initialValues = location.state || {};
     const [searchTerm, setSearchTerm] = useState("");

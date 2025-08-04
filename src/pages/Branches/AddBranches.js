@@ -155,7 +155,7 @@ export default function AddBranches() {
 
     const navigate = useNavigate();
 
-    document.title = "User List | SNAAP - React Admin & Dashboard Template";
+    document.title = "Add Branch | SNAAP - Radiology & Diagnostic Centers";
 
     const [contact, setContact] = useState();
     const [modal, setModal] = useState(false);
@@ -418,7 +418,7 @@ export default function AddBranches() {
                                                     className={`form-control custom-dropdown text-start d-flex align-items-center justify-content-between ${validation.touched.country && validation.errors.country ? "is-invalid" : ""}`}
                                                 >
                                                     <span className="flex-grow-1 text-truncate">
-                                                       {Country?.find(country => country.name == validation.values.country)?.flag } {validation.values.country || "Select Country"}
+                                                        {Country?.find(country => country.name == validation.values.country)?.flag} {validation.values.country || "Select Country"}
                                                     </span>
                                                     <i className="mdi mdi-chevron-down"></i>
                                                 </DropdownToggle>

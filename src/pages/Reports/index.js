@@ -303,7 +303,7 @@ const branchesData = [
 
 
 const Reports = () => {
-    document.title = "User List | SNAAP - React Admin & Dashboard Template";
+    document.title = "Reports | SNAAP - Radiology & Diagnostic Centers";
 
     const navigate = useNavigate();
 

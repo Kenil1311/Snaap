@@ -53,7 +53,7 @@ const dummySegments = [
 ];
 
 const Sagment = () => {
-    document.title = "User List | SNAAP - React Admin & Dashboard Template";
+    document.title = "Sagments | SNAAP - Radiology & Diagnostic Centers";
 
     const [segments, setSegments] = useState(dummySegments);
     const [selectedSegment, setSelectedSegment] = useState(null);

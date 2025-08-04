@@ -179,7 +179,7 @@ const branchesData = [
 const Branches = () => {
     const navigate = useNavigate();
 
-    document.title = "User List | SNAAP - React Admin & Dashboard Template";
+    document.title = "Branches | SNAAP - Radiology & Diagnostic Centers";
 
     const [contact, setContact] = useState();
     const [modal, setModal] = useState(false);

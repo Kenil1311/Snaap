@@ -152,6 +152,8 @@ const branchesData = [
 
 export default function EditReport() {
 
+    document.title = "Edit Report | SNAAP - Radiology & Diagnostic Centers";
+
     const navigate = useNavigate();
 
     const location = useLocation();

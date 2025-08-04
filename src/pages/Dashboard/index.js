@@ -79,7 +79,7 @@ const options = {
 const Dashboard = () => {
 
     //meta title
-    document.title = "Dashboard | SNAAP - React Admin & Dashboard Template";
+    document.title = "Dashboard | SNAAP Radiology & Diagnostic Centers";
 
     return (
         <React.Fragment>
@@ -146,8 +146,8 @@ const Dashboard = () => {
                             </div>
                         </Col>
                         <Col lg={6}>
-                            <Card className="border border-primary">
-                                <div className="card-header bg-transparent border-primary">
+                            <Card className="card-h-100">
+                                <div className="card-header bg-transparent">
                                     <h5 className="my-0 text-primary"><i className="mdi mdi-bullseye-arrow me-3"></i>Primary outline Card</h5>
                                 </div>
                                 <CardBody>
