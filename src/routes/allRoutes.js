@@ -118,6 +118,7 @@ import EditBranches from "../pages/Branches/EditBranches";
 import AddReport from "../pages/Reports/AddReport";
 import EditReport from "../pages/Reports/EditReport";
 import Reports from "../pages/Reports";
+import Pathology from "../pages/Pathology";
 
 const userRoutes = [
   //dashboard
@@ -128,8 +129,8 @@ const userRoutes = [
   { path: "/branches", component: <Branches /> },
   { path: "/add-branches", component: <AddBranches /> },
   { path: "/edit-branches", component: <EditBranches /> },
-
   { path: "/sagments", component: <Sagment /> },
+  { path: "/pathology", component: <Pathology /> },
 
   //profile
   { path: "/profile", component: <UserProfile /> },

@@ -332,3 +332,41 @@ span.flatpickr-weekday {
   background-clip: padding-box;
   color: var(--bs-modal-color);
 }
+
+
+.custom-select__control {
+  appearance: none !important;
+  background-color: var(--bs-tertiary-bg) !important;
+  background-clip: padding-box !important;
+  border: var(--bs-border-width) solid var(--bs-border-color) !important;
+  border-radius: var(--bs-border-radius) !important;
+  // transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+  box-shadow: none;
+}
+
+.custom-select__single-value {
+  color: var(--bs-body-color) !important;
+}
+
+.custom-select__menu {
+  background-color: var(--bs-tertiary-bg) !important;
+  color: var(--bs-body-color) !important;
+}
+
+.custom-select__option {
+  background-color: var(--bs-tertiary-bg) !important;
+  color: var(--bs-body-color) !important;
+  cursor: pointer;
+}
+
+.custom-select__option--is-focused {
+  background-color: $gray-400 !important;
+  background-clip: padding-box;
+  color: $light-text-emphasis !important;
+}
+
+.custom-select__option--is-selected {
+  background-color: $blue-300 !important;
+  background-clip: padding-box;
+  color: $light-text-emphasis !important;
+}

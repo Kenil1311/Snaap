@@ -1,10 +1,13 @@
 import { useFormik } from 'formik';
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Form, FormFeedback, Input, Label, Row, UncontrolledDropdown } from 'reactstrap'
+import { Button, Card, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Form, FormFeedback, Input, Label, Row, InputGroup } from 'reactstrap'
 import * as Yup from "yup";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import Dropzone from 'react-dropzone';
+import Select from "react-select"
+import "flatpickr/dist/themes/material_blue.css"
+import Flatpickr from "react-flatpickr"
 
 const branchesData = [
     {
@@ -220,6 +223,248 @@ const branchesData = [
     },
 ];
 
+const sagmentData = [
+    {
+        id: 1,
+        type: "2D",
+        name: "OPG",
+        description: "",
+        createdBy: "Admin",
+        createdDate: "2024-01-10T10:00:00Z",
+        // updatedAt: "2024-06-10T12:30:00Z",
+        status: "Active",
+    },
+    {
+        id: 2,
+        type: "2D",
+        name: "WATER VIEW",
+        description: "",
+        createdBy: "Admin",
+        createdDate: "2023-11-05T14:20:00Z",
+        // updatedAt: "2024-07-15T09:00:00Z",
+        status: "Inactive",
+    },
+    {
+        id: 3,
+        type: "2D",
+        name: "REVERSE TOWN VIEW",
+        description: "",
+        createdBy: "Admin",
+        createdDate: "2023-11-05T14:20:00Z",
+        // updatedAt: "2024-07-15T09:00:00Z",
+        status: "Active",
+    },
+    {
+        id: 4,
+        type: "2D",
+        name: "LATERAL CEPHALGRAM TRUE",
+        description: "",
+        createdBy: "Admin",
+        createdDate: "2023-11-05T14:20:00Z",
+        // updatedAt: "2024-07-15T09:00:00Z",
+        status: "Active",
+    },
+    {
+        id: 5,
+        type: "2D",
+        name: "HAND WRIST RADIOGRAPH",
+        description: "",
+        createdBy: "Admin",
+        createdDate: "2023-11-05T14:20:00Z",
+        // updatedAt: "2024-07-15T09:00:00Z",
+        status: "Active",
+    },
+    {
+        id: 6,
+        type: "2D",
+        name: "PA MANDIBLE/SKULL VIEW",
+        description: "",
+        createdBy: "Admin",
+        createdDate: "2023-11-05T14:20:00Z",
+        // updatedAt: "2024-07-15T09:00:00Z",
+        status: "Active",
+    },
+    {
+        id: 7,
+        type: "2D",
+        name: "LATERAL CEPHALGRAM WITH TRACING",
+        description: "",
+        createdBy: "Admin",
+        createdDate: "2023-11-05T14:20:00Z",
+        // updatedAt: "2024-07-15T09:00:00Z",
+        status: "Active",
+    },
+    {
+        id: 8,
+        type: "2D",
+        name: "SUBMENTOVERTEEX VIEW",
+        description: "",
+        createdBy: "Admin",
+        createdDate: "2023-11-05T14:20:00Z",
+        // updatedAt: "2024-07-15T09:00:00Z",
+        status: "Active",
+    },
+    {
+        id: 9,
+        type: "2D",
+        name: "TMJ View",
+        description: "",
+        createdBy: "Admin",
+        createdDate: "2023-11-05T14:20:00Z",
+        // updatedAt: "2024-07-15T09:00:00Z",
+        status: "Active",
+    },
+    {
+        id: 10,
+        type: "3D",
+        name: "SELECTIONAL CBCT (5 X 5)",
+        description: "",
+        createdBy: "Admin",
+        createdDate: "2023-11-05T14:20:00Z",
+        // updatedAt: "2024-07-15T09:00:00Z",
+        status: "Active",
+    },
+    {
+        id: 11,
+        type: "3D",
+        name: "CBCT OF TMJ RIGHT/LEFT (8 X 8)",
+        description: "",
+        createdBy: "Admin",
+        createdDate: "2023-11-05T14:20:00Z",
+        // updatedAt: "2024-07-15T09:00:00Z",
+        status: "Active",
+    },
+    {
+        id: 12,
+        type: "3D",
+        name: "CBCT OF MAXILLA (FULL ARCH. 10 X 5, 8 X 8)",
+        description: "",
+        createdBy: "Admin",
+        createdDate: "2023-11-05T14:20:00Z",
+        // updatedAt: "2024-07-15T09:00:00Z",
+        status: "Active",
+    },
+    {
+        id: 13,
+        type: "3D",
+        name: "CBCT OF TMJ BOTH (17 X 6)",
+        description: "",
+        createdBy: "Admin",
+        createdDate: "2023-11-05T14:20:00Z",
+        // updatedAt: "2024-07-15T09:00:00Z",
+        status: "Active",
+    },
+    {
+        id: 14,
+        type: "3D",
+        name: "CBCT OF MANDIBLE (FULL ARCH. 10 X 5, 8 X 8)",
+        description: "",
+        createdBy: "Admin",
+        createdDate: "2023-11-05T14:20:00Z",
+        // updatedAt: "2024-07-15T09:00:00Z",
+        status: "Active",
+    },
+    {
+        id: 15,
+        type: "3D",
+        name: "SINUS VIEW (10 X 10)",
+        description: "",
+        createdBy: "Admin",
+        createdDate: "2023-11-05T14:20:00Z",
+        // updatedAt: "2024-07-15T09:00:00Z",
+        status: "Active",
+    },
+    {
+        id: 16,
+        type: "3D",
+        name: "CBCT OF BOTH JAWS (FULL ARCH. 10 X 10)",
+        description: "",
+        createdBy: "Admin",
+        createdDate: "2023-11-05T14:20:00Z",
+        // updatedAt: "2024-07-15T09:00:00Z",
+        status: "Active",
+    },
+    {
+        id: 17,
+        type: "3D",
+        name: "FULL FACIAL 3D IMAGING (17 X 16)",
+        description: "",
+        createdBy: "Admin",
+        createdDate: "2023-11-05T14:20:00Z",
+        // updatedAt: "2024-07-15T09:00:00Z",
+        status: "Active",
+    },
+];
+
+const optionGroup = [
+    { label: "Cancer", value: "Cancer" },
+    { label: "Implant", value: "Implant" }
+]
+
+const ganderOptionGroup = [
+    { label: "Male", value: "Male" },
+    { label: "Female", value: "Female" },
+    { label: "Other", value: "Other" }
+]
+
+const branchOptions = Object.values(
+    branchesData.reduce((acc, branch) => {
+        const city = branch.city;
+
+        if (!acc[city]) {
+            acc[city] = {
+                label: city,
+                options: []
+            };
+        }
+
+        acc[city].options.push({
+            label: branch.area,
+            value: branch.area,
+            city: branch.city,
+        });
+
+        return acc;
+    }, {})
+);
+
+const segmentOptions = Object.values(
+    sagmentData.reduce((acc, sagment) => {
+        const type = sagment.type;
+
+        if (!acc[type]) {
+            acc[type] = {
+                label: type,
+                options: []
+            };
+        }
+
+        acc[type].options.push({
+            label: sagment.name,
+            value: sagment.name,
+            type: sagment.type
+        });
+
+        return acc;
+    }, {})
+);
+
+const findBranchByValue = (valueToFind) => {
+    for (const group of branchOptions) {
+        const found = group.options.find(opt => opt.value === valueToFind);
+        if (found) return found;
+    }
+    return null;
+};
+
+const findSegmentByValue = (valueToFind) => {
+    for (const group of segmentOptions) {
+        const found = group.options.find(opt => opt.value === valueToFind);
+        if (found) return found;
+    }
+    return null;
+};
+
 
 export default function EditReport() {
 
@@ -235,19 +480,22 @@ export default function EditReport() {
         initialValues: initialValues || {
             id: "",
             name: "",
-            birthdate: "",
+            phone: "",
+            email: "",
             gender: "",
             age: "",
             studyDate: "",
             modality: "",
+            pathology: "",
             description: "",
             segment: "",
             branch: ""
         },
         validationSchema: Yup.object({
             name: Yup.string().required("Please enter patient name"),
-            birthdate: Yup.date().required("Please select birthdate"),
             gender: Yup.string().required("Please select gender"),
+            phone: Yup.string().required("Please enter phone name").matches(/^[0-9]+$/, "Phone number must be numeric").min(10, "Phone number must be at least 10 digits").max(15, "Phone number cannot exceed 15 digits"),
+            email: Yup.string().required("Please enter email adress").email("Please enter a valid email address"),
             age: Yup.number().typeError("Age must be a number").required("Please enter age"),
             studyDate: Yup.date().required("Please select study date"),
             modality: Yup.string().required("Please enter modality"),
@@ -294,10 +542,6 @@ export default function EditReport() {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
     }
 
-    // Filtered branches
-    const filteredBranches = branchesData.filter(branch =>
-        branch.branchName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
 
     return (
         <React.Fragment>
@@ -318,48 +562,26 @@ export default function EditReport() {
                                     <Col md="6">
                                         <div className="mb-3">
                                             <Label>Branch</Label>
-                                            <UncontrolledDropdown className="w-100">
-                                                <DropdownToggle
-                                                    caret
-                                                    className={`form-control custom-dropdown text-start d-flex align-items-center justify-content-between ${validation.touched.gender && validation.errors.gender ? "is-invalid" : ""}`}
-                                                >
-                                                    <span className="flex-grow-1 text-truncate">
-                                                        {validation.values.branch || "Select Branch"}
-                                                    </span>
-                                                    <i className="mdi mdi-chevron-down"></i>
-                                                </DropdownToggle>
+                                            <Select
+                                                name="branch"
+                                                placeholder="Select Branch"
+                                                value={findBranchByValue(validation.values.branch)}
+                                                onChange={(selectedOption) =>
+                                                    validation.handleChange({
+                                                        target: {
+                                                            name: "branch",
+                                                            value: selectedOption.value
+                                                        }
+                                                    })
+                                                }
+                                                options={branchOptions}
+                                                classNamePrefix="custom-select"
+                                                className="react-select-container"
+                                            />
 
-                                                <DropdownMenu className="w-100 shadow-sm mt-1 border rounded p-2" style={{ maxHeight: "200px", overflowY: "auto" }}>
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="Search branch"
-                                                        value={searchTerm}
-                                                        onChange={(e) => setSearchTerm(e.target.value)}
-                                                        className="mb-2"
-                                                    />
-
-                                                    {filteredBranches.map((branch) => (
-                                                        <DropdownItem
-                                                            key={branch.branchName}
-                                                            onClick={() => {
-                                                                validation.setFieldValue("branch", branch.branchName);
-                                                            }}
-                                                            className={`text-dark  custom-dropdown-item rounded px-2 py-1 ${validation.values.branch === branch.branchName ? "custom-dropdown-item-active" : ""}`}
-                                                            style={{ whiteSpace: "normal", wordWrap: "break-word" }}
-                                                        >
-                                                            {branch.branchName}
-                                                        </DropdownItem>
-                                                    ))}
-
-                                                    {filteredBranches.length === 0 && (
-                                                        <DropdownItem disabled className="text-muted">No branches found</DropdownItem>
-                                                    )}
-                                                </DropdownMenu>
-                                            </UncontrolledDropdown>
-
-                                            {validation.touched.gender && validation.errors.gender && (
+                                            {validation.touched.branch && validation.errors.branch && (
                                                 <div className="invalid-feedback d-block">
-                                                    {validation.errors.gender}
+                                                    {validation.errors.branch}
                                                 </div>
                                             )}
                                         </div>
@@ -369,34 +591,26 @@ export default function EditReport() {
                                     <Col md="6">
                                         <div className="mb-3">
                                             <Label>Segment</Label>
-                                            <UncontrolledDropdown className="w-100">
-                                                <DropdownToggle
-                                                    caret
-                                                    className={`form-control custom-dropdown text-start d-flex align-items-center justify-content-between ${validation.touched.gender && validation.errors.gender ? "is-invalid" : ""}`}
-                                                >
-                                                    <span className="flex-grow-1 text-truncate">
-                                                        {validation.values.segment || "Select segment"}
-                                                    </span>
-                                                    <i className="mdi mdi-chevron-down"></i>
-                                                </DropdownToggle>
+                                            <Select
+                                                name="segment"
+                                                placeholder="Select Segment"
+                                                value={findSegmentByValue(validation.values.segment)}
+                                                onChange={(selectedOption) =>
+                                                    validation.handleChange({
+                                                        target: {
+                                                            name: "segment",
+                                                            value: selectedOption.value
+                                                        }
+                                                    })
+                                                }
+                                                options={segmentOptions}
+                                                classNamePrefix="custom-select"
+                                                className="react-select-container"
+                                            />
 
-                                                <DropdownMenu className="w-100 shadow-sm mt-1 border rounded">
-                                                    {["CBCT", "OPG"].map((sagment) => (
-                                                        <DropdownItem
-                                                            key={sagment}
-                                                            onClick={() => validation.setFieldValue("segment", sagment)}
-                                                            className={`text-dark custom-dropdown-item rounded px-2 py-1 ${validation.values.segment === sagment ? "custom-dropdown-item-active" : ""}`}
-                                                            style={{ backgroundColor: "white" }}
-                                                        >
-                                                            {sagment}
-                                                        </DropdownItem>
-                                                    ))}
-                                                </DropdownMenu>
-                                            </UncontrolledDropdown>
-
-                                            {validation.touched.gender && validation.errors.gender && (
+                                            {validation.touched.segment && validation.errors.segment && (
                                                 <div className="invalid-feedback d-block">
-                                                    {validation.errors.gender}
+                                                    {validation.errors.segment}
                                                 </div>
                                             )}
                                         </div>
@@ -423,6 +637,37 @@ export default function EditReport() {
 
                                     <Col md="6">
                                         <div className="mb-3">
+                                            <Label>Gender</Label>
+                                            <Select
+                                                name="gender"
+                                                placeholder="Select Gender"
+                                                value={ganderOptionGroup.find(opt => opt.value === validation.values.gender)}
+                                                onChange={(selectedOption) =>
+                                                    validation.handleChange({
+                                                        target: {
+                                                            name: "segment",
+                                                            value: { type: segmentOptions, value: selectedOption.value }
+                                                        }
+                                                    })
+                                                }
+                                                options={ganderOptionGroup}
+                                                classNamePrefix="custom-select"
+                                                className="react-select-container"
+                                            />
+
+                                            {validation.touched.gender && validation.errors.gender && (
+                                                <div className="invalid-feedback d-block">
+                                                    {validation.errors.gender}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </Col>
+                                </Row>
+
+                                <Row>
+
+                                    <Col md="6">
+                                        <div className="mb-3">
                                             <Label>Age</Label>
                                             <Input
                                                 name="age"
@@ -436,63 +681,69 @@ export default function EditReport() {
                                             <FormFeedback>{validation.errors.age}</FormFeedback>
                                         </div>
                                     </Col>
-                                </Row>
 
-                                <Row>
-                                    <Col md="6">
-                                        <div className="mb-3">
-                                            <Label>Gender</Label>
-                                            <UncontrolledDropdown className="w-100">
-                                                <DropdownToggle
-                                                    caret
-                                                    className={`form-control custom-dropdown text-start d-flex align-items-center justify-content-between ${validation.touched.gender && validation.errors.gender ? "is-invalid" : ""}`}
-
-                                                >
-                                                    <span className="flex-grow-1 text-truncate">
-                                                        {validation.values.gender || "Select gender"}
-                                                    </span>
-                                                    <i className="mdi mdi-chevron-down"></i>
-                                                </DropdownToggle>
-
-                                                <DropdownMenu className="w-100 shadow-sm mt-1 border rounded">
-                                                    {["Male", "Female", "Other"].map((gender) => (
-                                                        <DropdownItem
-                                                            key={gender}
-                                                            onClick={() => validation.setFieldValue("gender", gender)}
-                                                            className={`text-dark rounded px-2 py-1 custom-dropdown-item ${validation.values.gender === gender ? "custom-dropdown-item-active" : ""}`}
-                                                            style={{ backgroundColor: "white" }}
-                                                        >
-                                                            {gender}
-                                                        </DropdownItem>
-                                                    ))}
-                                                </DropdownMenu>
-                                            </UncontrolledDropdown>
-
-                                            {validation.touched.gender && validation.errors.gender && (
-                                                <div className="invalid-feedback d-block">
-                                                    {validation.errors.gender}
-                                                </div>
-                                            )}
-                                        </div>
-                                    </Col>
                                     <Col md="6">
                                         <div className="mb-3">
                                             <Label>Study Date</Label>
-                                            <Input
-                                                name="studyDate"
-                                                type="date"
-                                                onChange={validation.handleChange}
-                                                onBlur={validation.handleBlur}
-                                                value={validation.values.studyDate}
-                                                invalid={validation.touched.studyDate && !!validation.errors.studyDate}
-                                            />
+                                            <InputGroup>
+                                                <Flatpickr
+                                                    className="form-control d-block"
+                                                    placeholder="Select study date"
+                                                    options={{
+                                                        altInput: true,
+                                                        altFormat: "F j, Y",
+                                                        dateFormat: "Y-m-d"
+                                                    }}
+                                                    value={validation.values.studyDate}
+                                                    onChange={(date) => {
+                                                        console.log("studyDate", date[0])
+                                                        validation.setFieldValue("studyDate", date[0]);
+                                                    }}
+                                                    invalid={validation.touched.studyDate && !!validation.errors.studyDate}
+                                                />
+
+                                            </InputGroup>
                                             <FormFeedback>{validation.errors.studyDate}</FormFeedback>
                                         </div>
                                     </Col>
                                 </Row>
 
                                 <Row>
-                                    <Col md="12">
+                                    <Col md="6">
+                                        <div className="mb-3">
+                                            <Label>Phone</Label>
+                                            <Input
+                                                name="phone"
+                                                type="tel"
+                                                placeholder="Enter phone number"
+                                                onChange={validation.handleChange}
+                                                onBlur={validation.handleBlur}
+                                                value={validation.values.phone}
+                                                invalid={validation.touched.phone && !!validation.errors.phone}
+                                            />
+                                            <FormFeedback>{validation.errors.phone}</FormFeedback>
+                                        </div>
+                                    </Col>
+
+                                    <Col md="6">
+                                        <div className="mb-3">
+                                            <Label>Email</Label>
+                                            <Input
+                                                name="email"
+                                                type="email"
+                                                placeholder="Enter email address"
+                                                onChange={validation.handleChange}
+                                                onBlur={validation.handleBlur}
+                                                value={validation.values.email}
+                                                invalid={validation.touched.email && !!validation.errors.email}
+                                            />
+                                            <FormFeedback>{validation.errors.email}</FormFeedback>
+                                        </div>
+                                    </Col>
+                                </Row>
+
+                                <Row>
+                                    <Col md="6">
                                         <div className="mb-3">
                                             <Label>Modality</Label>
                                             <Input
@@ -505,6 +756,29 @@ export default function EditReport() {
                                                 invalid={validation.touched.modality && !!validation.errors.modality}
                                             />
                                             <FormFeedback>{validation.errors.modality}</FormFeedback>
+                                        </div>
+                                    </Col>
+
+                                    <Col md="6">
+                                        <div className="mb-3">
+                                            <Label>Pathology</Label>
+                                            <Select
+                                                name="pathology"
+                                                placeholder="Select Pathology"
+                                                value={optionGroup.find(opt => opt.value === validation.values.pathology)}
+                                                onChange={(selectedOption) =>
+                                                    validation.handleChange({
+                                                        target: {
+                                                            name: "pathology",
+                                                            value: selectedOption.value
+                                                        }
+                                                    })
+                                                }
+                                                options={optionGroup}
+                                                classNamePrefix="custom-select"
+                                                className="react-select-container"
+                                            />
+                                            {/* <FormFeedback>{validation.errors.pathology}</FormFeedback> */}
                                         </div>
                                     </Col>
                                 </Row>
@@ -528,7 +802,7 @@ export default function EditReport() {
                                     </Col>
                                 </Row>
 
-                                                                <Row>
+                                <Row>
                                     <Col md="6">
                                         <div className="mb-3">
                                             <Label>Upload File(DICOM/OPG)</Label>
@@ -657,7 +931,7 @@ export default function EditReport() {
                                     </Col>
                                 </Row>
 
-                                <div className="d-flex justify-content-end gap-3">
+                                <div className="d-flex justify-content-end gap-3 mb-3">
                                     <Button type='button' color="secondary" onClick={() => navigate(-1)}>
                                         Cancel
                                     </Button>

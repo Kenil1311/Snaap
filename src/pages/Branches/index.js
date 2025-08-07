@@ -327,7 +327,7 @@ const Branches = () => {
             }
         }
     }, [location.state]);
-    console.log("branchesdata", branchesData);
+
 
     const [branches, setBranches] = useState(branchesData);
 
@@ -342,14 +342,14 @@ const Branches = () => {
                 Header: "Branch Name",
                 accessor: "branchName",
                 Cell: ({ value }) => (
-                    <span className="fw-semibold text-dark">{value}</span>
+                    <span className="text-muted tex">{value}</span>
                 ),
             },
             {
                 Header: "Area Name",
                 accessor: "area",
                 Cell: ({ value }) => (
-                    <span className="fw-semibold text-muted">{value}</span>
+                    <span className="fw-semibold text-dark">{value}</span>
                 ),
             },
             {
@@ -362,14 +362,17 @@ const Branches = () => {
                 ),
             },
             {
-                Header: "Address Line 1",
+                Header: "Address",
                 accessor: "address1",
-                Cell: ({ value }) => <span>{value}</span>,
-            },
-            {
-                Header: "Address Line 2",
-                accessor: "address2",
-                Cell: ({ value }) => <span>{value}</span>,
+                Cell: ({ row }) => {
+                    const { address1, address2 } = row.original;
+                    return (
+                        <div>
+                            <span>{address1}</span>
+                            <span>{address2}</span>
+                        </div>
+                    );
+                },
             },
             {
                 Header: "City",

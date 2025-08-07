@@ -28,8 +28,9 @@ import { useFormik } from "formik";
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import DeleteModal from "../../components/Common/DeleteModal";
-import { isEmpty } from "lodash";
+import { isEmpty, set } from "lodash";
 import FilterSidebar from "../../components/Common/FilterSidebar";
+import Sagment from "../Sagment";
 
 
 const patientsData = [
@@ -41,9 +42,12 @@ const patientsData = [
         studyDate: "2025-07-15",
         modality: "MRI",
         description: "Brain MRI for persistent headaches",
-        segment: "CBCT",
+        segment: [{ value: "CBCT OF TMJ RIGHT/LEFT (8 X 8)", label: "CBCT OF TMJ RIGHT/LEFT (8 X 8)" }, { value: "CBCT OF TMJ RIGHT/LEFT (8 X 8)", label: "CBCT OF TMJ RIGHT/LEFT (8 X 8)" }],
         age: 40,
-        branch: "Mumbai Central Branch"
+        branch: "Lal Darwaja",
+        phone: "+91 93131 51637",
+        email: "aarav.mehta@example.com",
+        pathology: [{ value: "Cancer", label: "Cancer" }]
     },
     {
         id: 2,
@@ -53,9 +57,12 @@ const patientsData = [
         studyDate: "2025-06-18",
         modality: "CT",
         description: "CT scan for abdominal pain",
-        segment: "OPG",
+        segment: [{ value: "HAND WRIST RADIOGRAPH", label: "HAND WRIST RADIOGRAPH" }],
         age: 33,
-        branch: "Delhi NCR Branch"
+        branch: "Athwa",
+        phone: "+91 94296 77150",
+        email: "sneha.sharma@example.com",
+        pathology: [{ value: "Implant", label: "Implant" }]
     },
     {
         id: 3,
@@ -65,9 +72,12 @@ const patientsData = [
         studyDate: "2025-07-10",
         modality: "X-ray",
         description: "Chest X-ray for routine checkup",
-        segment: "CBCT",
+        segment: [{ value: "CBCT OF MANDIBLE (FULL ARCH. 10 X 5, 8 X 8)", label: "CBCT OF MANDIBLE (FULL ARCH. 10 X 5, 8 X 8)" }],
         age: 46,
-        branch: "Hyderabad Hub"
+        branch: "Adajan",
+        phone: "+91 63527 66065",
+        email: "rahul.kapoor@example.com",
+        pathology: [{ value: "Cancer", label: "Cancer" }]
     },
     {
         id: 4,
@@ -77,9 +87,12 @@ const patientsData = [
         studyDate: "2025-07-20",
         modality: "Ultrasound",
         description: "Ultrasound for pelvic scan",
-        segment: "OPG",
+        segment: [{ value: "PA MANDIBLE/SKULL VIEW", label: "PA MANDIBLE/SKULL VIEW" }],
         age: 36,
-        branch: "Chennai Office"
+        branch: "Althan",
+        phone: "",
+        email: "neha.verma@example.com",
+        pathology: [{ value: "Implant", label: "Implant" }]
     },
     {
         id: 5,
@@ -89,70 +102,25 @@ const patientsData = [
         studyDate: "2025-07-25",
         modality: "PET",
         description: "PET scan for metabolic activity",
-        segment: "CBCT",
+        segment: [{ value: "CBCT OF BOTH JAWS (FULL ARCH. 10 X 10)", label: "CBCT OF BOTH JAWS (FULL ARCH. 10 X 10)" }],
         age: 29,
-        branch: "Ahmedabad Support Center"
-    },
-    {
-        id: 6,
-        name: "Priya Das",
-        birthdate: "1990-05-05",
-        gender: "Female",
-        studyDate: "2025-07-11",
-        modality: "Mammography",
-        description: "Mammography screening",
-        segment: "OPG",
-        age: 35,
-        branch: "Kolkata Branch"
-    },
-    {
-        id: 7,
-        name: "Manoj Nair",
-        birthdate: "1982-08-08",
-        gender: "Male",
-        studyDate: "2025-07-14",
-        modality: "MRI",
-        description: "Knee MRI due to sports injury",
-        segment: "CBCT",
-        age: 42,
-        branch: "Bangalore Tech Park"
-    },
-    {
-        id: 8,
-        name: "Isha Singh",
-        birthdate: "1998-02-02",
-        gender: "Female",
-        studyDate: "2025-07-26",
-        modality: "Ultrasound",
-        description: "Routine pregnancy scan",
-        segment: "OPG",
-        age: 27,
-        branch: "Lucknow Regional Center"
-    },
-    {
-        id: 9,
-        name: "Vikram Chauhan",
-        birthdate: "1975-12-15",
-        gender: "Male",
-        studyDate: "2025-07-29",
-        modality: "CT",
-        description: "CT angiography for chest pain",
-        segment: "CBCT",
-        age: 49,
-        branch: "Pune Corporate Office"
-    },
-    {
-        id: 10,
-        name: "Anjali Rao",
-        birthdate: "1988-07-01",
-        gender: "Female",
-        studyDate: "2025-07-13",
-        modality: "X-ray",
-        description: "Spinal X-ray after minor accident",
-        segment: "OPG",
-        age: 37,
-        branch: "Jaipur Office"
+        branch: "Vesu",
+        phone: "+91 63527 57631",
+        email: "karan.patel@example.com",
+        pathology: [{ value: "Implant", label: "Implant" }]
     }
+];
+
+const segments2D = [
+    { id: 1, type: "2D", name: "OPG", description: "", createdBy: "Admin", createdDate: "2024-01-10T10:00:00Z", status: "Active" },
+    { id: 2, type: "2D", name: "WATER VIEW", description: "", createdBy: "Admin", createdDate: "2023-11-05T14:20:00Z", status: "Inactive" },
+    { id: 3, type: "2D", name: "REVERSE TOWN VIEW", description: "", createdBy: "Admin", createdDate: "2023-11-05T14:20:00Z", status: "Active" },
+    { id: 4, type: "2D", name: "LATERAL CEPHALGRAM TRUE", description: "", createdBy: "Admin", createdDate: "2023-11-05T14:20:00Z", status: "Active" },
+    { id: 5, type: "2D", name: "HAND WRIST RADIOGRAPH", description: "", createdBy: "Admin", createdDate: "2023-11-05T14:20:00Z", status: "Active" },
+    { id: 6, type: "2D", name: "PA MANDIBLE/SKULL VIEW", description: "", createdBy: "Admin", createdDate: "2023-11-05T14:20:00Z", status: "Active" },
+    { id: 7, type: "2D", name: "LATERAL CEPHALGRAM WITH TRACING", description: "", createdBy: "Admin", createdDate: "2023-11-05T14:20:00Z", status: "Active" },
+    { id: 8, type: "2D", name: "SUBMENTOVERTEEX VIEW", description: "", createdBy: "Admin", createdDate: "2023-11-05T14:20:00Z", status: "Active" },
+    { id: 9, type: "2D", name: "TMJ View", description: "", createdBy: "Admin", createdDate: "2023-11-05T14:20:00Z", status: "Active" }
 ];
 
 
@@ -163,59 +131,9 @@ const Reports = () => {
 
     const [modal, setModal] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
-    const [initialValues, setInitialValues] = useState({
-        id: "",
-        name: "",
-        birthdate: "",
-        gender: "",
-        studyDate: "",
-        modality: "",
-        description: "",
-        segment: "",
-        age: "",
-        branch: ""
-    })
     const [selectedPatient, setSelectedPatient] = useState(null);
     const [isOpenFillter, setIsOpenFillter] = useState(false);
-
-    // validation
-    const validation = useFormik({
-        enableReinitialize: true,
-        initialValues: initialValues || {
-            id: "",
-            name: "",
-            birthdate: "",
-            gender: "",
-            age: "",
-            studyDate: "",
-            modality: "",
-            description: "",
-            segment: "",
-            branch: ""
-        },
-        validationSchema: Yup.object({
-            name: Yup.string().required("Please enter patient name"),
-            birthdate: Yup.date().required("Please select birthdate"),
-            gender: Yup.string().required("Please select gender"),
-            age: Yup.number().typeError("Age must be a number").required("Please enter age"),
-            studyDate: Yup.date().required("Please select study date"),
-            modality: Yup.string().required("Please enter modality"),
-            description: Yup.string().required("Please enter description"),
-            segment: Yup.string().required("Please select segment"),
-            branch: Yup.string().required("Please select branch"),
-        }),
-        onSubmit: (values) => {
-            if (values.id) {
-                // Edit patient
-                updatePatient(values);
-            } else {
-                // Add patient
-                addPatient({ ...values, id: Date.now() }); // Use unique ID
-            }
-
-            setModal(false); // Close modal after submit
-        },
-    });
+    const [isFilterAdded, setIsFilterAdded] = useState(false);
 
     const [patients, setPatients] = useState(patientsData);
 
@@ -229,17 +147,20 @@ const Reports = () => {
             {
                 Header: "Branch",
                 accessor: "branch",
-                Cell: ({ value }) => <span>{value}</span>,
+                Cell: ({ value }) => <span className="text-wrap" style={{ whiteSpace: "normal" }}>{value}</span>,
             },
             {
                 Header: "Segment",
                 accessor: "segment",
-                Cell: ({ value }) => <span className={`badge ${value == "CBCT" ? 'bg-secondary' : 'bg-warning'} p-1`}>{value}</span>,
+                Cell: ({ value }) =>
+                    value?.map((seg, index) => (
+                        <span key={index} className={`badge ${segments2D?.find(sagment => sagment.name == seg?.value) ? 'bg-secondary' : 'bg-warning'} p-1 me-1`}>{seg?.value}</span>
+                    )),
             },
             {
                 Header: "Name",
                 accessor: "name",
-                Cell: ({ value }) => <span className="fw-semibold text-dark">{value}</span>,
+                Cell: ({ value }) => <span className="fw-semibold text-dark text-wrap" style={{ whiteSpace: "normal" }}>{value}</span>,
             },
             {
                 Header: "Age",
@@ -254,17 +175,31 @@ const Reports = () => {
             {
                 Header: "Study Date",
                 accessor: "studyDate",
-                Cell: ({ value }) => <span>{value}</span>,
+                Cell: ({ value }) => <span>{new Date(value).toLocaleString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                })}</span>,
             },
             {
                 Header: "Modality",
                 accessor: "modality",
-                Cell: ({ value }) => <span>{value}</span>,
+                Cell: ({ value }) => <span className="text-wrap" style={{ whiteSpace: "normal" }}>{value}</span>,
+            },
+            {
+                Header: "Pathology",
+                accessor: "pathology",
+                Cell: ({ value }) =>
+                    value?.map((pathology, index) => (
+                        <span key={index} className={`p-1 me-1`}>{pathology?.value}</span>
+                    )),
             },
             {
                 Header: "Description",
                 accessor: "description",
-                Cell: ({ value }) => <span>{value}</span>,
+                Cell: ({ value }) => <span className="text-wrap" style={{ whiteSpace: "normal" }}>{value}</span>,
             },
             {
                 Header: "Action",
@@ -409,6 +344,7 @@ const Reports = () => {
                                         toggle={handleToggle}
                                         isOpenFillter={true}
                                         setIsOpenFillter={setIsOpenFillter}
+                                        isFilterAdded={isFilterAdded}
                                     />
                                 </Col>
                             </Row>
@@ -418,7 +354,14 @@ const Reports = () => {
                     <FilterSidebar
                         isOpen={isOpenFillter}
                         onClose={() => setIsOpenFillter(false)}
-                        onApply={(selectedFilters) => console.log(selectedFilters)}
+                        onApply={(selectedFilters) => {
+                            if (selectedFilters) {
+                                setIsFilterAdded(true);
+                            }
+                            else {
+                                setIsFilterAdded(false);
+                            }
+                        }}
                     />
 
                 </Container>

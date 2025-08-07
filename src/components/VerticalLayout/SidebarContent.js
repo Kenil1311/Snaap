@@ -185,6 +185,11 @@ const SidebarContent = props => {
                     Segment
                   </Link>
                 </li>
+                <li>
+                  <Link to="/pathology">
+                    Pathology
+                  </Link>
+                </li>
               </ul>
             </li>
 

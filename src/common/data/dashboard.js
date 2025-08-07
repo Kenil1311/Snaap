@@ -6,26 +6,36 @@ const WidgetsData = [
         rank: "20",
         isDoller: false,
         postFix: "",
-        statusColor: "success",
+        statusColor: "green",
         series: [2, 10, 18, 22, 36, 15, 47, 75, 65, 19, 14, 2, 47, 42, 15],
     },
     {
         id: 2,
-        title: "Number of Reports",
+        title: "Number of Patients",
         price: 10,
         rank: "-29 Trades",
         isDoller: false,
-        statusColor: "danger",
+        statusColor: "red",
         series: [15, 42, 47, 2, 14, 19, 65, 75, 47, 15, 42, 47, 2, 14, 12,]
     },
     {
         id: 3,
-        title: "Number of Patients",
+        title: "Number of 2D Reports",
         price: 10,
         rank: "+$2.8k",
         isDoller: true,
         // postFix: "M",
-        statusColor: "success",
+        statusColor: "cyan",
+        series: [47, 15, 2, 67, 22, 20, 36, 60, 60, 30, 50, 11, 12, 3, 8,]
+    },
+    {
+        id: 3,
+        title: "Number of 3D Reports",
+        price: 10,
+        rank: "+$2.8k",
+        isDoller: true,
+        // postFix: "M",
+        statusColor: "orange",
         series: [47, 15, 2, 67, 22, 20, 36, 60, 60, 30, 50, 11, 12, 3, 8,]
     },
     // {

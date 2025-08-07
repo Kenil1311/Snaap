@@ -90,10 +90,10 @@ const Dashboard = () => {
                     <Breadcrumbs title="Dashboard" breadcrumbItem="Dashboard" />
 
                     <Row>
-                        <Col lg={6}>
+                        <Col lg={12}>
                             <div className='row'>
                                 {(WidgetsData || []).map((widget, key) => (
-                                    <div className="col-xl-4 col-md-4" key={key}>
+                                    <div className="col-xl-3 col-md-3" key={key}>
                                         <Card className="card-h-100">
                                             <CardBody>
                                                 <Row className="align-items-center">
@@ -111,12 +111,7 @@ const Dashboard = () => {
                                                                     separator=""
                                                                     style={{
                                                                         fontSize: 30,
-                                                                        color:
-                                                                            widget?.title === "Number of Branches"
-                                                                                ? "green"
-                                                                                : widget?.title === "Number of Reports"
-                                                                                    ? "orange"
-                                                                                    : "red"
+                                                                        color: widget?.statusColor
                                                                     }}
                                                                 />
                                                             </span>
@@ -146,17 +141,7 @@ const Dashboard = () => {
                                 ))}
                             </div>
                         </Col>
-                        <Col lg={6}>
-                            <Card className="card-h-100">
-                                <div className="card-header bg-transparent">
-                                    <h5 className="my-0 text-primary"><i className="mdi mdi-bullseye-arrow me-3"></i>Primary outline Card</h5>
-                                </div>
-                                <CardBody>
-                                    {/* <h5 className="card-title">card title</h5> */}
-                                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                </CardBody>
-                            </Card>
-                        </Col>
+                       
                     </Row>
                     <Row className="d-flex align-items-stretch">
                         <Col xl={6} className="d-flex">

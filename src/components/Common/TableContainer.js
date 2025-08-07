@@ -12,6 +12,7 @@ import {
 import { Table, Row, Col, Button, Input, InputGroup, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 import { Filter, DefaultColumnFilter } from "./filters";
 import { Link } from "react-router-dom";
+import { TbArrowNarrowUp, TbArrowNarrowDown } from "react-icons/tb";
 
 //Import Flatepicker
 import Flatpickr from "react-flatpickr";
@@ -73,7 +74,8 @@ const TableContainer = ({
   theadClass,
   toggle,
   isOpenFillter,
-  setIsOpenFillter
+  setIsOpenFillter,
+  isFilterAdded = false, // Default value for isFilterAdded
 }) => {
   const {
     getTableProps,
@@ -108,7 +110,7 @@ const TableContainer = ({
   );
 
   const generateSortingIndicator = column => {
-    return column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : "";
+    return column.isSorted ? (column.isSortedDesc ? <TbArrowNarrowDown /> : <TbArrowNarrowUp />) : "";
   };
 
   const onChangeInSelect = event => {
@@ -170,9 +172,22 @@ const TableContainer = ({
           {/* Action Buttons */}
           <Col sm={12} md={6}>
             <div className="d-flex justify-content-md-end justify-content-start flex-wrap gap-3">
-              {isOpenFillter && (<button className="btn btn-outline-secondary btn-md" onClick={() => setIsOpenFillter(true)}>
-                <i className="fas fa-filter me-1"></i> Filter
-              </button>)}
+              {isOpenFillter && (
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary position-relative"
+                  onClick={() => setIsOpenFillter(true)}
+                >
+                  <i className="fas fa-filter me-1"></i>
+                  Filter{" "}
+                  {isFilterAdded && (<span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    +1{" "}
+                    <span className="visually-hidden">
+                      Filter added
+                    </span>
+                  </span>)}
+                </button>
+              )}
               <button className="btn btn-outline-success btn-md" onClick={exportVisibleToCSV}>
                 <i className="fas fa-download me-1"></i> Export
               </button>
