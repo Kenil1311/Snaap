@@ -102,12 +102,12 @@ export default function EditReport() {
             age: initialValues?.age,
             studyDate: initialValues?.studydate,
             modality: initialValues?.modality,
-            pathology: initialValues?.pathologies.map(item => ({
+            pathology: initialValues?.pathologies?.map(item => ({
                 value: item.id,
                 label: item.name
             })),
             description: initialValues?.description,
-            segment: initialValues?.segments.map(item => ({
+            segment: initialValues?.segments?.map(item => ({
                 value: item.id,
                 label: item.name
             })),
@@ -146,8 +146,8 @@ export default function EditReport() {
                 name: values.name,
                 phone: values.phone,
                 studyDate: new Date(values.studyDate).getTime(),
-                pathology_ids: values.pathology.map(p => (p.value)),
-                segment_ids: values.segment.map(s => (s.value))
+                pathology_ids: values.pathology?.map(p => (p.value)),
+                segment_ids: values.segment?.map(s => (s.value))
             };
             dispatch(updateReport(transformed))
 
