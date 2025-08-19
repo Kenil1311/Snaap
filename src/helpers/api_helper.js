@@ -5,13 +5,21 @@ import accessToken from "./jwt-token-access/accessToken"
 const token = accessToken
 
 //apply base url for axios
-const API_URL = ""
+const API_URL = "http://localhost:5000/api/"
 
 const axiosApi = axios.create({
   baseURL: API_URL,
 })
 
 axiosApi.defaults.headers.common["Authorization"] = token
+
+axiosApi.interceptors.request.use(config => {
+  const token = localStorage.getItem("authToken") // or get it from wherever you store it
+  if (token) {
+    config.headers["Authorization"] = `Bearer ${token}`
+  }
+  return config
+})
 
 axiosApi.interceptors.response.use(
   response => response,
@@ -24,13 +32,13 @@ export async function get(url, config = {}) {
 
 export async function post(url, data, config = {}) {
   return axiosApi
-    .post(url, { ...data }, { ...config })
+    .post(url, data, { ...config })
     .then(response => response.data)
 }
 
 export async function put(url, data, config = {}) {
   return axiosApi
-    .put(url, { ...data }, { ...config })
+    .put(url, data, { ...config })
     .then(response => response.data)
 }
 

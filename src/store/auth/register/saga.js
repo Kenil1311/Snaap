@@ -1,47 +1,44 @@
-import { takeEvery, fork, put, all, call } from "redux-saga/effects"
+import { takeEvery, fork, put, all, call } from "redux-saga/effects";
 
-//Account Redux states
-import { REGISTER_USER } from "./actionTypes"
-import { registerUserSuccessful, registerUserFailed } from "./actions"
+// Account Redux states
+import { REGISTER_USER } from "./actionTypes";
+import { registerUserSuccessful, registerUserFailed } from "./actions";
 
-//Include Both Helper File with needed methods
-import { getFirebaseBackend } from "../../../helpers/firebase_helper"
-import {
-  postFakeRegister,
-  postJwtRegister,
-} from "../../../helpers/fakebackend_helper"
+// API helper
+import { post } from "../../../helpers/api_helper";
 
-// initialize relavant method of both Auth
-const fireBaseBackend = getFirebaseBackend()
-
-// Is user register successfull then direct plot user in redux.
-function* registerUser({ payload: { user } }) {
+function* registerUser({ payload: { user} }) {
   try {
-    if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-      const response = yield call(
-        fireBaseBackend.registerUser,
-        user.email,
-        user.password
-      )
-      yield put(registerUserSuccessful(response))
-    } else if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
-      const response = yield call(postJwtRegister, "/post-jwt-register", user)
-      yield put(registerUserSuccessful(response))
-    } else if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
-      const response = yield call(postFakeRegister, user)
-      yield put(registerUserSuccessful(response))
+    // Call your backend register API
+    const response = yield call(post, "users/register", {
+      username: user.username.trim(),
+      email: user.email.trim(),
+      password: user.password.trim(),
+    });
+
+    if (response?.status === true) {
+      // Registration success
+      yield put(registerUserSuccessful(response.data));      
+    } else {
+      // API returned failure
+      yield put(registerUserFailed(response?.message || "Registration failed"));
     }
   } catch (error) {
-    yield put(registerUserFailed(error))
+    // Handle network or server errors
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.message ||
+      "Something went wrong, please try again.";
+    yield put(registerUserFailed(errorMessage));
   }
 }
 
 export function* watchUserRegister() {
-  yield takeEvery(REGISTER_USER, registerUser)
+  yield takeEvery(REGISTER_USER, registerUser);
 }
 
 function* accountSaga() {
-  yield all([fork(watchUserRegister)])
+  yield all([fork(watchUserRegister)]);
 }
 
-export default accountSaga
+export default accountSaga;

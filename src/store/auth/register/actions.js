@@ -4,7 +4,7 @@ import {
   REGISTER_USER_FAILED,
 } from "./actionTypes"
 
-export const registerUser = user => {
+export const registerUser = (user) => {
   return {
     type: REGISTER_USER,
     payload: { user },

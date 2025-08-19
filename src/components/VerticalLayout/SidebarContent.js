@@ -181,7 +181,7 @@ const SidebarContent = props => {
                   <Link to="/branches">Branches</Link>
                 </li>
                 <li>
-                  <Link to="/sagments">
+                  <Link to="/segments">
                     Segment
                   </Link>
                 </li>

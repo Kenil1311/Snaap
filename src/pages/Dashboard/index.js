@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import ReactApexChart from "react-apexcharts"
 
@@ -16,7 +16,6 @@ import {
 import CountUp from "react-countup";
 
 /** import Mini Widget data */
-import { WidgetsData } from "../../common/data/dashboard";
 import WalletBalance from './WalletBalance';
 import InvestedOverview from './InvestedOverview';
 import MarketOverview from './MarketOverview';
@@ -25,6 +24,8 @@ import Trading from './Trading';
 import Transactions from './Transactions';
 import RecentActivity from './RecentActivity';
 import NewSlider from './NewSlider';
+import { useDispatch, useSelector } from 'react-redux';
+import { getBranches, getReports } from '../../store/actions';
 
 const options = {
     chart: {
@@ -79,8 +80,62 @@ const options = {
 
 const Dashboard = () => {
 
+
+    const dispatch = useDispatch();
+
+    const branches = useSelector(state => state.branch?.branches || []);
+    const reports = useSelector(state => state.report?.reports || []);
+
+    useEffect(() => {
+        dispatch(getBranches());
+        dispatch(getReports({}));
+    }, [dispatch]);
+
     //meta title
     document.title = "Dashboard | SNAAP Radiology & Diagnostic Centers";
+
+    const WidgetsData = useMemo(() => {
+        const numBranches = branches?.length || 0;
+        const numPatients = reports?.length || 0; // assuming each report = one patient
+
+        // Count all 2D and 3D segments across all reports
+        const num2DReports = reports?.reduce((count, report) => {
+            return count + (report?.segments?.filter(seg => seg.type === "2D")?.length || 0);
+        }, 0);
+
+        const num3DReports = reports?.reduce((count, report) => {
+            return count + (report?.segments?.filter(seg => seg.type === "3D")?.length || 0);
+        }, 0);
+
+        return [
+            {
+                id: 1,
+                title: "Number of Branches",
+                price: numBranches,
+                statusColor: "green",
+            },
+            {
+                id: 2,
+                title: "Number of Patients",
+                price: numPatients,
+                statusColor: "red",
+            },
+            {
+                id: 3,
+                title: "Number of 2D Reports",
+                price: num2DReports,
+                statusColor: "cyan",
+            },
+            {
+                id: 4,
+                title: "Number of 3D Reports",
+                price: num3DReports,
+                statusColor: "orange",
+            },
+        ];
+    }, [branches, reports]);
+
+
 
     return (
         <React.Fragment>
@@ -120,28 +175,13 @@ const Dashboard = () => {
 
                                                     </Col>
                                                 </Row>
-                                                {/* <div className="text-nowrap">
-                                                    <span
-                                                        className={
-                                                            "badge bg-" +
-                                                            widget.statusColor +
-                                                            "-subtle text-" +
-                                                            widget.statusColor
-                                                        }
-                                                    >
-                                                        {widget.rank}
-                                                    </span>
-                                                    <span className="ms-1 text-muted font-size-13">
-                                                        Since last week
-                                                    </span>
-                                                </div> */}
                                             </CardBody>
                                         </Card>
                                     </div>
                                 ))}
                             </div>
                         </Col>
-                       
+
                     </Row>
                     <Row className="d-flex align-items-stretch">
                         <Col xl={6} className="d-flex">

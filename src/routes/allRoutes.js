@@ -112,7 +112,7 @@ import AuthLogout from "../pages/AuthenticationInner/Logout";
 import UserProfile from "../pages/Authentication/user-profile";
 import RangeSlider from "../pages/Extended/RangeSlider/Index";
 import Branches from "../pages/Branches";
-import Sagment from "../pages/Sagment";
+import Segment from "../pages/Segment";
 import AddBranches from "../pages/Branches/AddBranches";
 import EditBranches from "../pages/Branches/EditBranches";
 import AddReport from "../pages/Reports/AddReport";
@@ -129,7 +129,7 @@ const userRoutes = [
   { path: "/branches", component: <Branches /> },
   { path: "/add-branches", component: <AddBranches /> },
   { path: "/edit-branches", component: <EditBranches /> },
-  { path: "/sagments", component: <Sagment /> },
+  { path: "/segments", component: <Segment /> },
   { path: "/pathology", component: <Pathology /> },
 
   //profile

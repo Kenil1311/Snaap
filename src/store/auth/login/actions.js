@@ -19,9 +19,9 @@ export const loginSuccess = user => {
     type: LOGIN_SUCCESS,
     payload: user,
   }
-}
+} 
 
-export const logoutUser = history => {
+export const logoutUser = (history) => {
   return {
     type: LOGOUT_USER,
     payload: { history },
@@ -42,7 +42,7 @@ export const apiError = error => {
   }
 }
 
-export const socialLogin = ( type, history ) => {
+export const socialLogin = (type, history) => {
   return {
     type: SOCIAL_LOGIN,
     payload: { type, history },

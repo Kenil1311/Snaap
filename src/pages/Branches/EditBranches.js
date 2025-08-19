@@ -5,6 +5,8 @@ import { Button, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, For
 import * as Yup from "yup";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { isEmpty } from "lodash";
+import { updateBranch } from '../../store/Branch/actions';
+import { useDispatch } from 'react-redux';
 
 const branchesData = [
     {
@@ -153,9 +155,10 @@ const branchesData = [
 export default function EditBranches() {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     document.title = "Edit Branch | SNAAP - Radiology & Diagnostic Centers";
-    
+
     const location = useLocation();
     const initialValues = location.state || {};
     const [searchTerm, setSearchTerm] = useState("");
@@ -164,12 +167,12 @@ export default function EditBranches() {
     const validation = useFormik({
         enableReinitialize: true,
         initialValues: initialValues || {
-            branchName: "",
+            name: "",
             area: "",
             email: "",
             phone: "",
-            address1: "",
-            address2: "",
+            address_1: "",
+            address_2: "",
             city: "",
             state: "",
             zip: "",
@@ -178,24 +181,44 @@ export default function EditBranches() {
             longitude: "",
         },
         validationSchema: Yup.object({
-            branchName: Yup.string().required("Please enter branch name"),
+            name: Yup.string().required("Please enter branch name"),
             area: Yup.string().required("Please enter area name"),
-            email: Yup.string().email("Invalid email").required("Email is required"),
-            phone: Yup.string().required("Phone number is required"),
-            address1: Yup.string().required("Address 1 is required"),
+            email: Yup.string().email("Invalid email").required("Email is required").optional(),
+            phone: Yup.string()
+                .nullable()
+                .matches(/^[-+]?\d*$/, "Phone number must be numeric"),
+            address_1: Yup.string().required("Address 1 is required"),
             city: Yup.string().required("City is required"),
             state: Yup.string().required("State is required"),
             zip: Yup.string().required("Zip code is required"),
             country: Yup.string().required("Country is required"),
+            latitude: Yup.string()
+                .nullable()
+                .matches(/^[-+]?\d*\.?\d*$/, 'Latitude must be a number'),
+            longitude: Yup.string()
+                .nullable()
+                .matches(/^[-+]?\d*\.?\d*$/, 'Longitude must be a number')
         }),
         onSubmit: (values) => {
-            console.log("edited branches", values);
+            const data = {
+                "id": values?.id,
+                "name": values?.name?.trim(),
+                "area": values?.area?.trim(),
+                "phone": values?.phone?.trim(),
+                "email": values?.email?.trim(),
+                "address_1": values?.address_1?.trim(),
+                "address_2": values?.address_2?.trim(),
+                "city": values?.city?.trim(),
+                "state": values?.state?.trim(),
+                "zip": values?.zip?.trim(),
+                "country": values?.country?.trim(),
+                "latitude": values?.latitude,
+                "longitude": values?.longitude
+            }
 
-            navigate('/branches', {
-                state: {
-                    ...values
-                }
-            });
+            dispatch(updateBranch(data));
+
+            navigate('/branches');
         },
     });
 
@@ -247,15 +270,15 @@ export default function EditBranches() {
                                         <div className="mb-3">
                                             <Label>Branch Name</Label>
                                             <Input
-                                                name="branchName"
+                                                name="name"
                                                 type="text"
                                                 placeholder="Enter branch name"
                                                 onChange={validation.handleChange}
                                                 onBlur={validation.handleBlur}
-                                                value={validation.values.branchName}
-                                                invalid={validation.touched.branchName && !!validation.errors.branchName}
+                                                value={validation.values.name}
+                                                invalid={validation.touched.name && !!validation.errors.name}
                                             />
-                                            <FormFeedback>{validation.errors.branchName}</FormFeedback>
+                                            <FormFeedback>{validation.errors.name}</FormFeedback>
                                         </div>
                                     </Col>
 
@@ -316,34 +339,34 @@ export default function EditBranches() {
                                         <div className="mb-3">
                                             <Label>Address 1</Label>
                                             <Input
-                                                name="address1"
+                                                name="address_1"
                                                 type="text"
                                                 placeholder="Enter address line 1"
                                                 onChange={validation.handleChange}
                                                 onBlur={validation.handleBlur}
-                                                value={validation.values.address1}
-                                                invalid={validation.touched.address1 && !!validation.errors.address1}
+                                                value={validation.values.address_1}
+                                                invalid={validation.touched.address_1 && !!validation.errors.address_1}
                                             />
-                                            <FormFeedback>{validation.errors.address1}</FormFeedback>
+                                            <FormFeedback>{validation.errors.address_1}</FormFeedback>
                                         </div>
                                     </Col>
                                     <Col md="6">
                                         <div className="mb-3">
                                             <Label>Address 2</Label>
                                             <Input
-                                                name="address2"
+                                                name="address_2"
                                                 type="text"
                                                 placeholder="Enter address line 2"
                                                 onChange={validation.handleChange}
                                                 onBlur={validation.handleBlur}
-                                                value={validation.values.address2}
+                                                value={validation.values.address_2}
                                             />
                                         </div>
                                     </Col>
                                 </Row>
 
                                 <Row>
-                                    <Col md="6">
+                                    <Col md="4">
                                         <div className="mb-3">
                                             <Label>City</Label>
                                             <Input
@@ -358,7 +381,7 @@ export default function EditBranches() {
                                             <FormFeedback>{validation.errors.city}</FormFeedback>
                                         </div>
                                     </Col>
-                                    <Col md="6">
+                                    <Col md="4">
                                         <div className="mb-3">
                                             <Label>State</Label>
                                             <Input
@@ -373,11 +396,7 @@ export default function EditBranches() {
                                             <FormFeedback>{validation.errors.state}</FormFeedback>
                                         </div>
                                     </Col>
-                                </Row>
-
-                                <Row>
-
-                                    <Col md="6">
+                                    <Col md="4">
                                         <div className="mb-3">
                                             <Label>Zip</Label>
                                             <Input
@@ -392,8 +411,42 @@ export default function EditBranches() {
                                             <FormFeedback>{validation.errors.zip}</FormFeedback>
                                         </div>
                                     </Col>
+                                </Row>
 
-                                    <Col md="6">
+                                <Row>
+
+                                    <Col md="4">
+                                        <div className="mb-3">
+                                            <Label>Latitude</Label>
+                                            <Input
+                                                name="latitude"
+                                                type="text"
+                                                placeholder="Enter latitude"
+                                                onChange={validation.handleChange}
+                                                onBlur={validation.handleBlur}
+                                                value={validation.values.latitude}
+                                                invalid={validation.touched.latitude && !!validation.errors.latitude}
+                                            />
+                                            <FormFeedback>{validation.errors.latitude}</FormFeedback>
+                                        </div>
+                                    </Col>
+                                    <Col md="4">
+                                        <div className="mb-3">
+                                            <Label>Longitude</Label>
+                                            <Input
+                                                name="longitude"
+                                                type="text"
+                                                placeholder="Enter longitude"
+                                                onChange={validation.handleChange}
+                                                onBlur={validation.handleBlur}
+                                                value={validation.values.longitude}
+                                                invalid={validation.touched.longitude && !!validation.errors.longitude}
+                                            />
+                                            <FormFeedback>{validation.errors.longitude}</FormFeedback>
+                                        </div>
+                                    </Col>
+
+                                    <Col md="4">
                                         <div className="mb-3">
                                             <Label>Country</Label>
                                             <UncontrolledDropdown className="w-100">
@@ -439,7 +492,7 @@ export default function EditBranches() {
 
                                 </Row>
 
-                                <div className="d-flex justify-content-end gap-3">
+                                <div className="d-flex justify-content-end gap-3 mt-3">
                                     <Button type='button' color="secondary" onClick={() => navigate(-1)}>
                                         Cancel
                                     </Button>

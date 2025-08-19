@@ -29,6 +29,10 @@ import { useFormik } from "formik";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import DeleteModal from "../../components/Common/DeleteModal";
 import { isEmpty } from "lodash";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteBranch, getBranches } from "../../store/Branch/actions";
+import { toast, ToastContainer } from "react-toastify";
+import UploadFileModel from "../../components/Common/UploadFileModel";
 
 
 const branchesData = [
@@ -246,7 +250,16 @@ const branchesData = [
 ];
 
 const Branches = () => {
+
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const branches = useSelector(state => state.branch?.branches || []);
+    const error = useSelector(state => state.branch?.error);
+
+    useEffect(() => {
+        dispatch(getBranches());
+    }, [dispatch]);
 
     document.title = "Branches | SNAAP - Radiology & Diagnostic Centers";
 
@@ -267,7 +280,7 @@ const Branches = () => {
         longitude: "",
     })
     const [selectedBranch, setSelectedBranch] = useState(null);
-
+    const [isOpenImportModel, setIsOpenImportModel] = useState(false)
 
     // validation
     const validation = useFormik({
@@ -307,29 +320,7 @@ const Branches = () => {
             setModal(false)
         },
     });
-    const location = useLocation();
-    const newData = location.state || {};
 
-    useEffect(() => {
-
-        console.log("in branch list data", newData);
-
-        // Check if newData is an object with at least one key
-        const isDataValid = newData && Object.keys(newData).length > 0;
-
-        if (isDataValid) {
-            if (newData?.id) {
-                console.log("data valid in update");
-                updateBranch(newData);
-            } else {
-                console.log("data valid in add");
-                addBranch({ ...newData, id: branches?.length + 1 });
-            }
-        }
-    }, [location.state]);
-
-
-    const [branches, setBranches] = useState(branchesData);
 
     const columns = useMemo(
         () => [
@@ -340,7 +331,7 @@ const Branches = () => {
             },
             {
                 Header: "Branch Name",
-                accessor: "branchName",
+                accessor: "name",
                 Cell: ({ value }) => (
                     <span className="text-muted tex">{value}</span>
                 ),
@@ -363,13 +354,13 @@ const Branches = () => {
             },
             {
                 Header: "Address",
-                accessor: "address1",
+                accessor: "address",
                 Cell: ({ row }) => {
-                    const { address1, address2 } = row.original;
+                    const { address_1, address_2 } = row.original;
                     return (
                         <div>
-                            <span>{address1}</span>
-                            <span>{address2}</span>
+                            <span>{address_1}</span>
+                            <span>{address_2}</span>
                         </div>
                     );
                 },
@@ -435,19 +426,6 @@ const Branches = () => {
         }
     }, [branches]);
 
-    const addBranch = (newBranch) => {
-        console.log("add branch data", newBranch);
-
-        setBranches((prev) => [...prev, { ...newBranch, id: branches?.length + 1 }]);
-    };
-
-    const updateBranch = (updatedBranch) => {
-        setBranches((prev) =>
-            prev.map((branch) =>
-                branch.id === updatedBranch.id ? updatedBranch : branch
-            )
-        );
-    };
 
     const toggle = () => {
         if (modal) {
@@ -506,8 +484,9 @@ const Branches = () => {
     };
 
     const handleDeleteUser = () => {
-        const filteredBranches = branches.filter(branch => branch.id !== selectedBranch);
-        setBranches(filteredBranches);
+        // const filteredBranches = branches.filter(branch => branch.id !== selectedBranch);
+        // setBranches(filteredBranches);
+        dispatch(deleteBranch(selectedBranch))
         onPaginationPageChange(1);
         setDeleteModal(false);
     };
@@ -519,6 +498,11 @@ const Branches = () => {
             console.error('Navigation error:', e);
         }
     };
+
+    const onImport = () => {
+        setIsOpenImportModel(true)
+    }
+
     const keyField = "id";
 
     return (
@@ -528,6 +512,13 @@ const Branches = () => {
                 onDeleteClick={handleDeleteUser}
                 onCloseClick={() => setDeleteModal(false)}
             />
+
+            <UploadFileModel
+                show={isOpenImportModel}
+                onClose={() => setIsOpenImportModel(false)}
+                type={"branch"}
+            />
+
             <div className="page-content">
                 <Container fluid>
                     {/* Render Breadcrumbs */}
@@ -539,12 +530,13 @@ const Branches = () => {
                                 <Col xl="12">
                                     <TableContainer
                                         columns={columns}
-                                        data={branches}
+                                        data={branches.sort((a, b) => a.id - b.id)}
                                         isGlobalFilter={true}
                                         isAddUserList={true}
                                         customPageSize={10}
                                         className="table align-middle datatable dt-responsive table-check nowrap"
                                         toggle={handleToggle}
+                                        onImport={onImport}
                                     />
 
                                     <Modal isOpen={modal} toggle={toggle} size="lg" centered>
@@ -755,6 +747,11 @@ const Branches = () => {
                         </Col>
                     </Row>
                 </Container>
+
+                <ToastContainer 
+                    className={"mt-2"}
+                />
+
             </div>
         </React.Fragment>
     );

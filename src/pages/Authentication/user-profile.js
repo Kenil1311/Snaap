@@ -55,18 +55,9 @@ const UserProfile = props => {
     const authUser = localStorage.getItem("authUser");
     if (authUser) {
       const obj = JSON.parse(authUser);
-      if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-        setname(obj.displayName);
-        setemail(obj.email);
-        setidx(obj.uid);
-      } else if (
-        process.env.REACT_APP_DEFAULTAUTH === "fake" ||
-        process.env.REACT_APP_DEFAULTAUTH === "jwt"
-      ) {
-        setname(obj.username);
-        setemail(obj.email);
-        setidx(obj.uid);
-      }
+      setname(obj.username);
+      setemail(obj.email);
+      setidx(obj.id);
       setTimeout(() => {
         dispatch(resetProfileFlag());
       }, 3000);
@@ -80,9 +71,11 @@ const UserProfile = props => {
     initialValues: {
       username: name || '',
       idx: idx || '',
+      email: email || ''
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Please Enter Your UserName"),
+      email: Yup.string().required("Please Enter you email address").email(),
     }),
     onSubmit: (values) => {
       dispatch(editProfile(values));
@@ -124,7 +117,7 @@ const UserProfile = props => {
             </Col>
           </Row>
 
-          <h4 className="card-title mb-4">Change User Name</h4>
+          <h4 className="card-title mb-4">Change User Details</h4>
 
           <Card>
             <CardBody>
@@ -156,9 +149,29 @@ const UserProfile = props => {
                   <Input name="idx" value={idx} type="hidden" />
                 </div>
 
+                <div className="form-group mt-3">
+                  <Label className="form-label">Email</Label>
+                  <Input
+                    name="email"
+                    className="form-control"
+                    placeholder="Enter Email Address"
+                    type="text"
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    value={validation.values.email || ""}
+                    invalid={
+                      validation.touched.email && validation.errors.email ? true : false
+                    }
+                  />
+                  {validation.touched.email && validation.errors.email ? (
+                    <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
+                  ) : null}
+                  <Input name="idx" value={idx} type="hidden" />
+                </div>
+
                 <div className="text-center mt-4">
                   <Button type="submit" color="danger">
-                    Update User Name
+                    Update User
                   </Button>
                 </div>
               </Form>

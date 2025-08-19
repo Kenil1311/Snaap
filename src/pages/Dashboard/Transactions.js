@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { TabContent, TabPane, CardBody, Collapse, Col, Row } from 'reactstrap';
 import classnames from 'classnames';
 import SimpleBar from 'simplebar-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getBranches, getReports, getSegments } from '../../store/actions';
 
 const mockSubTypes = {
   dicom: [
@@ -241,36 +243,93 @@ const branchesData = [
   },
 ];
 
-const generateMockData = (branchesData) => {
-  return branchesData.map((branch) => ({
-    id: branch.id,
-    branch: branch.area,
-    phone: branch.phone || "N/A",
-    location: `${branch.city}, ${branch.state}`,
-    dicom: Math.floor(Math.random() * 100),
-    opg: Math.floor(Math.random() * 100),
-  }));
-};
 
 const Transactions = () => {
   const [activeTab, setActiveTab] = useState('1');
   const [state, setState] = useState('ALL');
   const [openAccordions, setOpenAccordions] = useState(null);
 
+  const dispatch = useDispatch();
+
+  const branches = useSelector(state => state.branch?.branches || []);
+  const reports = useSelector(state => state.report?.reports || []);
+  const segments = useSelector(state => state.segment?.segments || []);
+
+  useEffect(() => {
+    dispatch(getBranches());
+    dispatch(getReports({}));
+    dispatch(getSegments());
+  }, [dispatch]);
+
   const toggleAccordion = (key) => {
-    console.log("key", key)
     setOpenAccordions((prev) => (prev === key ? null : key));
   };
 
+  const generateBranchSegmentCounts = (branches, segments, reports) => {
+    return branches.map(branch => {
+      // Filter reports for this branch (coerce IDs to same type)
+      const branchReports = reports.filter(r => String(r.branch_id) === String(branch.id));
+
+      let total2D = 0;
+      let total3D = 0;
+
+      const subtypesByType = {
+        "2D": [],
+        "3D": []
+      };
+
+      segments.forEach(seg => {
+        // Count how many times this segment appears in this branch
+        const count = branchReports.reduce((acc, report) => {
+          const segCount = report.segments?.filter(rSeg => String(rSeg.id) === String(seg.id))?.length || 0;
+          return acc + segCount;
+        }, 0);
+
+        if (seg.type === "2D") {
+          total2D += count;
+          subtypesByType["2D"].push({ name: [seg.name], count });
+        } else if (seg.type === "3D") {
+          total3D += count;
+          subtypesByType["3D"].push({ name: [seg.name], count });
+        }
+      });
+
+      return {
+        id: branch.id,
+        branch: branch.branch_name || branch.area,
+        phone: branch.phone || "N/A",
+        location: `${branch.city || "Unknown"}, ${branch.state || "Unknown"}`,
+        total2D,
+        total3D,
+        ...subtypesByType
+      };
+    });
+  };
+
+  const getFilteredReports = (reports, monthsAgo) => {
+    if (!monthsAgo) return reports; // ALL
+    const now = new Date();
+    const pastDate = new Date();
+    pastDate.setMonth(now.getMonth() - monthsAgo);
+
+    return reports.filter(report => {
+      const createdAt = new Date(report.created_at);
+      return createdAt >= pastDate;
+    });
+  };
 
   const dataByState = {
-    ALL: generateMockData(branchesData),
-    '1M': generateMockData(branchesData),
-    '6M': generateMockData(branchesData),
-    '1Y': generateMockData(branchesData)
+    ALL: generateBranchSegmentCounts(branches, segments, reports),
+    '1M': generateBranchSegmentCounts(branches, segments, getFilteredReports(reports, 1)),
+    '6M': generateBranchSegmentCounts(branches, segments, getFilteredReports(reports, 6)),
+    '1Y': generateBranchSegmentCounts(branches, segments, getFilteredReports(reports, 12))
   };
 
   const currentData = dataByState[state];
+
+
+
+  console.log(generateBranchSegmentCounts(branches, segments, reports))
 
   return (
     <div className="col-xl-12">
@@ -319,7 +378,7 @@ const Transactions = () => {
                               className="text-end"
                               style={{ cursor: "pointer" }}
                             >
-                              <h5 className="font-size-14 mb-0 text-primary">{branch.dicom}</h5>
+                              <h5 className="font-size-14 mb-0 text-primary">{branch.total2D}</h5>
                               <p className="text-muted mb-0 font-size-12">2D</p>
                             </div>
                           </td>
@@ -331,7 +390,7 @@ const Transactions = () => {
                               className="text-end"
                               style={{ cursor: "pointer" }}
                             >
-                              <h5 className="font-size-14 mb-0 text-success">{branch.opg}</h5>
+                              <h5 className="font-size-14 mb-0 text-success">{branch.total3D}</h5>
                               <p className="text-muted mb-0 font-size-12">3D</p>
                             </div>
                           </td>
@@ -346,10 +405,10 @@ const Transactions = () => {
                                 <Col md={6} className="p-0">
                                   <div className="accordion-body px-4 py-3 border-end">
                                     <strong className="d-block mb-2">2D Types:</strong>
-                                    {mockSubTypes.dicom?.length > 0 ? (
-                                      mockSubTypes.dicom.map((sub, idx) => (
+                                    {branch["2D"]?.length > 0 ? (
+                                      branch["2D"]?.map((sub, idx) => (
                                         <Row key={idx} className='mt-1'>
-                                          <Col xs={6} className="text-muted mb-0 font-size-12">{sub.type}</Col>
+                                          <Col xs={6} className="text-muted mb-0 font-size-12">{sub.name}</Col>
                                           <Col xs={6} className="text-end font-size-12"><strong>{sub.count}</strong></Col>
                                         </Row>
 
@@ -364,10 +423,10 @@ const Transactions = () => {
                                 <Col md={6} className="p-0">
                                   <div className="accordion-body px-4 py-3">
                                     <strong className="d-block mb-2">3D Types:</strong>
-                                    {mockSubTypes.opg?.length > 0 ? (
-                                      mockSubTypes.opg.map((sub, idx) => (
+                                    {branch["3D"]?.length > 0 ? (
+                                      branch["3D"]?.map((sub, idx) => (
                                         <Row key={idx} className='mt-1'>
-                                          <Col xs={6} className="text-muted mb-0 font-size-12">{sub.type}</Col>
+                                          <Col xs={6} className="text-muted mb-0 font-size-12">{sub.name}</Col>
                                           <Col xs={6} className="text-end font-size-12"><strong>{sub.count}</strong></Col>
                                         </Row>
                                       ))
@@ -382,6 +441,19 @@ const Transactions = () => {
                         </tr>
                       </React.Fragment>
                     ))}
+
+                    {currentData?.length === 0 && (
+                      <div
+                        className="d-flex flex-column justify-content-center align-items-center"
+                        style={{ height: "480px" }} // same as your table container height
+                      >
+                        <i className="fas fa-building fa-3x mb-3"></i>
+                        <h5 className="mb-2">No Branch Found</h5>
+                        <p className="mb-0 text-center">
+                          Currently, there are no branches to display. Please add a branch to get started.
+                        </p>
+                      </div>
+                    )}
                   </tbody>
                 </table>
               </SimpleBar>

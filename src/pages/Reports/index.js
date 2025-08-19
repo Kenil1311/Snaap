@@ -30,112 +30,30 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import DeleteModal from "../../components/Common/DeleteModal";
 import { isEmpty, set } from "lodash";
 import FilterSidebar from "../../components/Common/FilterSidebar";
-import Sagment from "../Sagment";
-
-
-const patientsData = [
-    {
-        id: 1,
-        name: "Aarav Mehta",
-        birthdate: "1985-06-12",
-        gender: "Male",
-        studyDate: "2025-07-15",
-        modality: "MRI",
-        description: "Brain MRI for persistent headaches",
-        segment: [{ value: "CBCT OF TMJ RIGHT/LEFT (8 X 8)", label: "CBCT OF TMJ RIGHT/LEFT (8 X 8)" }, { value: "CBCT OF TMJ RIGHT/LEFT (8 X 8)", label: "CBCT OF TMJ RIGHT/LEFT (8 X 8)" }],
-        age: 40,
-        branch: "Lal Darwaja",
-        phone: "+91 93131 51637",
-        email: "aarav.mehta@example.com",
-        pathology: [{ value: "Cancer", label: "Cancer" }]
-    },
-    {
-        id: 2,
-        name: "Sneha Sharma",
-        birthdate: "1992-01-25",
-        gender: "Female",
-        studyDate: "2025-06-18",
-        modality: "CT",
-        description: "CT scan for abdominal pain",
-        segment: [{ value: "HAND WRIST RADIOGRAPH", label: "HAND WRIST RADIOGRAPH" }],
-        age: 33,
-        branch: "Athwa",
-        phone: "+91 94296 77150",
-        email: "sneha.sharma@example.com",
-        pathology: [{ value: "Implant", label: "Implant" }]
-    },
-    {
-        id: 3,
-        name: "Rahul Kapoor",
-        birthdate: "1978-09-30",
-        gender: "Male",
-        studyDate: "2025-07-10",
-        modality: "X-ray",
-        description: "Chest X-ray for routine checkup",
-        segment: [{ value: "CBCT OF MANDIBLE (FULL ARCH. 10 X 5, 8 X 8)", label: "CBCT OF MANDIBLE (FULL ARCH. 10 X 5, 8 X 8)" }],
-        age: 46,
-        branch: "Adajan",
-        phone: "+91 63527 66065",
-        email: "rahul.kapoor@example.com",
-        pathology: [{ value: "Cancer", label: "Cancer" }]
-    },
-    {
-        id: 4,
-        name: "Neha Verma",
-        birthdate: "1989-03-17",
-        gender: "Female",
-        studyDate: "2025-07-20",
-        modality: "Ultrasound",
-        description: "Ultrasound for pelvic scan",
-        segment: [{ value: "PA MANDIBLE/SKULL VIEW", label: "PA MANDIBLE/SKULL VIEW" }],
-        age: 36,
-        branch: "Althan",
-        phone: "",
-        email: "neha.verma@example.com",
-        pathology: [{ value: "Implant", label: "Implant" }]
-    },
-    {
-        id: 5,
-        name: "Karan Patel",
-        birthdate: "1995-11-11",
-        gender: "Male",
-        studyDate: "2025-07-25",
-        modality: "PET",
-        description: "PET scan for metabolic activity",
-        segment: [{ value: "CBCT OF BOTH JAWS (FULL ARCH. 10 X 10)", label: "CBCT OF BOTH JAWS (FULL ARCH. 10 X 10)" }],
-        age: 29,
-        branch: "Vesu",
-        phone: "+91 63527 57631",
-        email: "karan.patel@example.com",
-        pathology: [{ value: "Implant", label: "Implant" }]
-    }
-];
-
-const segments2D = [
-    { id: 1, type: "2D", name: "OPG", description: "", createdBy: "Admin", createdDate: "2024-01-10T10:00:00Z", status: "Active" },
-    { id: 2, type: "2D", name: "WATER VIEW", description: "", createdBy: "Admin", createdDate: "2023-11-05T14:20:00Z", status: "Inactive" },
-    { id: 3, type: "2D", name: "REVERSE TOWN VIEW", description: "", createdBy: "Admin", createdDate: "2023-11-05T14:20:00Z", status: "Active" },
-    { id: 4, type: "2D", name: "LATERAL CEPHALGRAM TRUE", description: "", createdBy: "Admin", createdDate: "2023-11-05T14:20:00Z", status: "Active" },
-    { id: 5, type: "2D", name: "HAND WRIST RADIOGRAPH", description: "", createdBy: "Admin", createdDate: "2023-11-05T14:20:00Z", status: "Active" },
-    { id: 6, type: "2D", name: "PA MANDIBLE/SKULL VIEW", description: "", createdBy: "Admin", createdDate: "2023-11-05T14:20:00Z", status: "Active" },
-    { id: 7, type: "2D", name: "LATERAL CEPHALGRAM WITH TRACING", description: "", createdBy: "Admin", createdDate: "2023-11-05T14:20:00Z", status: "Active" },
-    { id: 8, type: "2D", name: "SUBMENTOVERTEEX VIEW", description: "", createdBy: "Admin", createdDate: "2023-11-05T14:20:00Z", status: "Active" },
-    { id: 9, type: "2D", name: "TMJ View", description: "", createdBy: "Admin", createdDate: "2023-11-05T14:20:00Z", status: "Active" }
-];
+import { useDispatch, useSelector } from "react-redux";
+import { deleteReport, getReports, getSegments } from "../../store/actions";
+import { ToastContainer } from "react-toastify";
 
 
 const Reports = () => {
     document.title = "Snaap Reports | SNAAP - Radiology & Diagnostic Centers";
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+
+    const reports = useSelector(state => state.report?.reports || []);
+    const error = useSelector(state => state.report?.error);
+    const segments = useSelector(state => state.segment?.segments || []);
+
 
     const [modal, setModal] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
-    const [selectedPatient, setSelectedPatient] = useState(null);
+    const [selectedReport, setSelectedReport] = useState(null);
     const [isOpenFillter, setIsOpenFillter] = useState(false);
     const [isFilterAdded, setIsFilterAdded] = useState(false);
-
-    const [patients, setPatients] = useState(patientsData);
+    const [selectedFilters, setSelectedFilters] = useState({})
+    const [activeFilter, setActiveFilter] = useState(0);
 
     const columns = useMemo(
         () => [
@@ -146,15 +64,15 @@ const Reports = () => {
             },
             {
                 Header: "Branch",
-                accessor: "branch",
+                accessor: "branch_name",
                 Cell: ({ value }) => <span className="text-wrap" style={{ whiteSpace: "normal" }}>{value}</span>,
             },
             {
                 Header: "Segment",
-                accessor: "segment",
+                accessor: "segments",
                 Cell: ({ value }) =>
                     value?.map((seg, index) => (
-                        <span key={index} className={`badge ${segments2D?.find(sagment => sagment.name == seg?.value) ? 'bg-secondary' : 'bg-warning'} p-1 me-1`}>{seg?.value}</span>
+                        <span key={index} className={`badge ${seg?.type == "2D" ? 'bg-secondary' : 'bg-warning'} p-1 me-1`}>{seg?.name}</span>
                     )),
             },
             {
@@ -174,14 +92,16 @@ const Reports = () => {
             },
             {
                 Header: "Study Date",
-                accessor: "studyDate",
-                Cell: ({ value }) => <span>{new Date(value).toLocaleString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                })}</span>,
+                accessor: "studydate",
+                Cell: ({ value }) => <span><span>
+                    {new Date(Number(value) || value).toLocaleString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                    })}
+                </span></span>,
             },
             {
                 Header: "Modality",
@@ -190,10 +110,10 @@ const Reports = () => {
             },
             {
                 Header: "Pathology",
-                accessor: "pathology",
+                accessor: "pathologies",
                 Cell: ({ value }) =>
                     value?.map((pathology, index) => (
-                        <span key={index} className={`p-1 me-1`}>{pathology?.value}</span>
+                        <span key={index} className={`p-1 me-1`}>{index != value?.length - 1 ?`${pathology?.name}, ` : pathology?.name} </span>
                     )),
             },
             {
@@ -231,44 +151,26 @@ const Reports = () => {
         []
     );
 
+    useEffect(() => {
+        dispatch(getReports(selectedFilters));
+        dispatch(getSegments());
+    }, [dispatch]);
 
-    const location = useLocation();
-    const newData = location.state || {};
 
     useEffect(() => {
-        // Check if newData is an object with at least one key
-        const isDataValid = newData && Object.keys(newData).length > 0;
-
-        if (isDataValid) {
-            if (newData?.id) {
-                updatePatient(newData);
-            } else {
-                addPatient({ ...newData, id: patients?.length + 1 });
-            }
-        }
-    }, [location.state]);
+        dispatch(getReports(selectedFilters));
+    }, [selectedFilters])
 
     useEffect(() => {
         setIsEdit(false);
-    }, [patients]);
+    }, [reports]);
 
     useEffect(() => {
-        if (!isEmpty(patients) && !!isEdit) {
+        if (!isEmpty(reports) && !!isEdit) {
             setIsEdit(false);
         }
-    }, [patients]);
+    }, [reports]);
 
-    const addPatient = (newPatient) => {
-        setPatients((prev) => [...prev, { ...newPatient, id: patients?.length + 1 }]);
-    };
-
-    const updatePatient = (updatedPatient) => {
-        setPatients((prev) =>
-            prev.map((patient) =>
-                patient.id === updatedPatient.id ? updatedPatient : patient
-            )
-        );
-    };
 
     const handleUserClick = (arg) => {
         const patient = arg;
@@ -296,13 +198,12 @@ const Reports = () => {
     const [deleteModal, setDeleteModal] = useState(false);
 
     const onClickDelete = (patien) => {
-        setSelectedPatient(patien?.id)
+        setSelectedReport(patien?.id)
         setDeleteModal(true);
     };
 
     const handleDeleteUser = () => {
-        const filteredPatients = patients.filter(patient => patient.id !== selectedPatient);
-        setPatients(filteredPatients);
+        dispatch(deleteReport(selectedReport))
         onPaginationPageChange(1);
         setDeleteModal(false);
     };
@@ -336,7 +237,7 @@ const Reports = () => {
                                 <Col xl="12">
                                     <TableContainer
                                         columns={columns}
-                                        data={patients}
+                                        data={reports}
                                         isGlobalFilter={true}
                                         isAddUserList={true}
                                         customPageSize={10}
@@ -344,7 +245,8 @@ const Reports = () => {
                                         toggle={handleToggle}
                                         isOpenFillter={true}
                                         setIsOpenFillter={setIsOpenFillter}
-                                        isFilterAdded={isFilterAdded}
+                                        isFilterAdded={selectedFilters ? Object.keys(selectedFilters).length > 0 ? true : false : false}
+                                        activeFilter={activeFilter}
                                     />
                                 </Col>
                             </Row>
@@ -352,19 +254,40 @@ const Reports = () => {
                     </Row>
 
                     <FilterSidebar
+                        values={selectedFilters}
                         isOpen={isOpenFillter}
                         onClose={() => setIsOpenFillter(false)}
-                        onApply={(selectedFilters) => {
-                            if (selectedFilters) {
-                                setIsFilterAdded(true);
-                            }
-                            else {
-                                setIsFilterAdded(false);
+                        onApply={(Filters) => {
+                            setSelectedFilters(Filters)
+
+                            if (Filters) {
+                                const { minAge, maxAge, ...rest } = Filters;
+
+                                const activeCountWithoutAge = Object.values(rest).filter(value => {
+                                    if (Array.isArray(value)) {
+                                        return value.length > 0;
+                                    }
+                                    if (typeof value === "number") {
+                                        return !isNaN(value);
+                                    }
+                                    if (typeof value === "string") {
+                                        return value.trim() !== "";
+                                    }
+                                    return false;
+                                }).length;
+
+                                // Check if age filter is active (either minAge or maxAge set)
+                                const isAgeActive = (typeof minAge === "number" && !isNaN(minAge)) ||
+                                    (typeof maxAge === "number" && !isNaN(maxAge));
+
+                                setActiveFilter(activeCountWithoutAge + (isAgeActive ? 1 : 0));
                             }
                         }}
                     />
-
                 </Container>
+
+                <ToastContainer />
+
             </div >
         </React.Fragment >
     );

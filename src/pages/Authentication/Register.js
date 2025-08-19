@@ -4,6 +4,7 @@ import { Row, Col, Alert, Container, Input, Label, Form, FormFeedback } from "re
 // Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
 
 // action
 import { registerUser, apiError } from "../../store/actions";
@@ -24,6 +25,7 @@ const Register = props => {
   document.title = "Register | SNAAP - React Admin & Dashboard Template";
 
   const dispatch = useDispatch()
+  const navigate = useNavigate();
 
   const registerData = createSelector(
     (state) => state.Account,

@@ -30,41 +30,34 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import DeleteModal from "../../components/Common/DeleteModal";
 import { isEmpty } from "lodash";
 import TextField from "@mui/material/TextField";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewPathology, deletePathology, getPathology, updatePathology } from "../../store/actions";
+import { ToastContainer } from "react-toastify";
 
 
-const dummyPathologies = [
-    {
-        id: 1,
-        name: "Cancer",
-        description: "Description for Cancer",
-        createdBy: "Admin",
-        createdDate: new Date().getTime(),
-        status: "Active",
-    },
-    {
-        id: 2,
-        name: "Implant",
-        description: "Description for Implant",
-        createdBy: "Admin",
-        createdDate: new Date().getTime(),
-        status: "Inactive",
-    }
+
+const StatusGroup = [
+    { label: "Active", value: "Active" },
+    { label: "Inactive", value: "Inactive" }
 ];
 
 
 const Pathology = () => {
+
     document.title = "Pathology | SNAAP - Radiology & Diagnostic Centers";
 
-    const [pathologies, setPathologies] = useState(dummyPathologies);
+    const dispatch = useDispatch();
+
+    const pathology = useSelector(state => state.pathology?.pathology || []);
+    const error = useSelector(state => state.pathology?.error);
+
     const [selectedPathology, setSelectedPathology] = useState(null);
     const [isEdit, setIsEdit] = useState(false);
     const [pathologyInitialValues, setPathologyInitialValues] = useState({
         id: null,
         name: "",
         description: "",
-        createdBy: "Admin",
-        createdDate: new Date().getTime(),
-        status: "Active",
+        isActive: true,
     });
     const [modal, setModal] = useState(false);
 
@@ -75,21 +68,21 @@ const Pathology = () => {
             id: null,
             name: "",
             description: "",
-            createdBy: "Admin",
-            createdDate: new Date().getTime(),
-            status: "Active",
+            isActive: true,
         },
         validationSchema: Yup.object({
             name: Yup.string().required("Pathology name is required"),
             // createdDate: Yup.date().required("Created date is required"),
         }),
         onSubmit: (values) => {
+            console.log(values, values)
             if (values.id) {
-                updatePathology(values);
+                dispatch(updatePathology(values))
             } else {
-                addPathology({ ...values, id: pathologies?.length + 1 });
+                dispatch(addNewPathology(values))
             }
             setModal(false);
+            validation.resetForm()
         },
     });
 
@@ -114,23 +107,25 @@ const Pathology = () => {
             },
             {
                 Header: "Created By",
-                accessor: "createdBy",
+                accessor: "createdByName",
                 Cell: ({ value }) => <span>{value}</span>,
             },
             {
                 Header: "Status",
-                accessor: "status",
-                Cell: ({ value }) => (
-                    <span
-                        className={`badge bg-${value === "Active" ? "success" : "secondary"}`}
-                    >
-                        {value}
-                    </span>
-                ),
+                accessor: "isActive",
+                Cell: ({ value }) => {
+                    return (
+                        <span
+                            className={`badge bg-${(value == true || value == "true") ? "success" : "secondary"}`}
+                        >
+                            {(value == true || value == "true") ? "Active" : "Inactive"}
+                        </span>
+                    )
+                },
             },
             {
                 Header: "Created At",
-                accessor: "createdDate",
+                accessor: "createdAt",
                 Cell: ({ value }) => (
                     <span className="text-muted small">
                         {new Date(value).toLocaleString("en-US", {
@@ -173,26 +168,20 @@ const Pathology = () => {
         []
     );
 
+    useEffect(() => {
+        dispatch(getPathology());
+    }, [dispatch]);
 
     useEffect(() => {
         setIsEdit(false);
-    }, [pathologies]);
+    }, [pathology]);
 
     useEffect(() => {
-        if (!isEmpty(pathologies) && !!isEdit) {
+        if (!isEmpty(pathology) && !!isEdit) {
             setIsEdit(false);
         }
-    }, [pathologies]);
+    }, [pathology]);
 
-    const addPathology = (newPathology) => {
-        setPathologies((prev) => [...prev, newPathology]);
-    };
-
-    const updatePathology = (updatedPathology) => {
-        setPathologies((prev) =>
-            prev.map((seg) => (seg.id === updatedPathology.id ? updatedPathology : seg))
-        );
-    };
 
 
     const toggle = () => {
@@ -204,9 +193,7 @@ const Pathology = () => {
                 id: null,
                 name: "",
                 description: "",
-                createdBy: "Admin",
-                createdDate: new Date().getTime(),
-                status: "Active",
+                isActive: true,
             });
         }
 
@@ -215,9 +202,7 @@ const Pathology = () => {
                 id: null,
                 name: "",
                 description: "",
-                createdBy: "Admin",
-                createdDate: new Date().getTime(),
-                status: "Active",
+                isActive: true,
             });
         }
         setModal(!modal);
@@ -253,8 +238,7 @@ const Pathology = () => {
     };
 
     const handleDeleteUser = () => {
-        const filteredpathologies = pathologies.filter(sagment => sagment.id !== selectedPathology);
-        setPathologies(filteredpathologies);
+        dispatch(deletePathology(selectedPathology))
         onPaginationPageChange(1);
         setDeleteModal(false);
     };
@@ -279,7 +263,7 @@ const Pathology = () => {
                                 <Col xl="12">
                                     <TableContainer
                                         columns={columns}
-                                        data={pathologies}
+                                        data={pathology.sort((a, b) => a.id - b.id)}
                                         isGlobalFilter={true}
                                         isAddUserList={true}
                                         customPageSize={10}
@@ -334,55 +318,26 @@ const Pathology = () => {
                                                     </Col>
                                                 </Row>
 
-                                                {/* <Row>
-                                                    <Col md="6">
-                                                        <div className="mb-3">
-                                                            <Label>Created By</Label>
-                                                            <Input
-                                                                name="createdBy"
-                                                                type="text"
-                                                                placeholder="Enter creator name"
-                                                                onChange={validation.handleChange}
-                                                                onBlur={validation.handleBlur}
-                                                                value={validation.values.createdBy}
-                                                                invalid={validation.touched.createdBy && !!validation.errors.createdBy}
-                                                            />
-                                                            <FormFeedback>{validation.errors.createdBy}</FormFeedback>
-                                                        </div>
-                                                    </Col>
-
-                                                    <Col md="6">
-                                                        <div className="mb-3">
-                                                            <Label>Created Date</Label>
-                                                            <Input
-                                                                name="createdDate"
-                                                                type="date"
-                                                                onChange={validation.handleChange}
-                                                                onBlur={validation.handleBlur}
-                                                                value={validation.values.createdDate}
-                                                                invalid={validation.touched.createdDate && !!validation.errors.createdDate}
-                                                            />
-                                                            <FormFeedback>{validation.errors.createdDate}</FormFeedback>
-                                                        </div>
-                                                    </Col>
-                                                </Row> */}
-
                                                 <Row>
                                                     <Col md="6">
                                                         <div className="mb-3">
                                                             <Label>Status</Label>
-                                                            <Input
-                                                                name="status"
-                                                                type="select"
-                                                                onChange={validation.handleChange}
-                                                                onBlur={validation.handleBlur}
-                                                                value={validation.values.status}
-                                                                invalid={validation.touched.status && !!validation.errors.status}
-                                                            >
-                                                                <option value="Active">Active</option>
-                                                                <option value="Inactive">Inactive</option>
-                                                            </Input>
-                                                            <FormFeedback>{validation.errors.status}</FormFeedback>
+                                                            <Select
+                                                                name="isActive"
+                                                                value={{ value: validation.values.isActive == true ? "Active" : "Inactive", label: validation.values.isActive == true ? "Active" : "Inactive" }}
+                                                                onChange={(selectedOption) =>
+                                                                    validation.handleChange({
+                                                                        target: {
+                                                                            name: "isActive",
+                                                                            value: selectedOption.value == "Active" ? true : false
+                                                                        }
+                                                                    })
+                                                                }
+                                                                options={StatusGroup}
+                                                                classNamePrefix="custom-select"
+                                                                className="react-select-container"
+                                                            />
+                                                            <FormFeedback>{validation.errors.isActive}</FormFeedback>
                                                         </div>
                                                     </Col>
                                                 </Row>
@@ -401,6 +356,9 @@ const Pathology = () => {
                         </Col>
                     </Row>
                 </Container>
+
+                <ToastContainer />
+
             </div>
         </React.Fragment>
     );

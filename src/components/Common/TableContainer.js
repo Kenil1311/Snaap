@@ -76,6 +76,8 @@ const TableContainer = ({
   isOpenFillter,
   setIsOpenFillter,
   isFilterAdded = false, // Default value for isFilterAdded
+  activeFilter = 0,
+  onImport
 }) => {
   const {
     getTableProps,
@@ -133,9 +135,15 @@ const TableContainer = ({
       headers.join(","), // header row
       ...page.map(row =>
         row.cells
-          .map(cell =>
-            `"${(cell.value ?? "").toString().replace(/"/g, '""')}"`
-          )
+          .map(cell => {
+            if (cell.column.id === "address") {
+              const address1 = row.original.address_1 || "";
+              const address2 = row.original.address_2 || "";
+              const fullAddress = `${address1} ${address2}`.trim().replace(/\s+/g, " "); // replace spaces with underscores
+              return `"${fullAddress.replace(/"/g, '""')}"`; // escape quotes for CSV
+            }
+            return `"${(cell.value ?? "").toString().replace(/"/g, '""')}"`; // normal columns
+          })
           .join(",")
       )
     ];
@@ -181,14 +189,17 @@ const TableContainer = ({
                   <i className="fas fa-filter me-1"></i>
                   Filter{" "}
                   {isFilterAdded && (<span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    +1{" "}
+                    +{activeFilter}{" "}
                     <span className="visually-hidden">
                       Filter added
                     </span>
                   </span>)}
                 </button>
               )}
-              <button className="btn btn-outline-success btn-md" onClick={exportVisibleToCSV}>
+              {/* <button className="btn btn-outline-success btn-md" onClick={onImport}>
+                <i className="fas fa-upload me-1"></i> Import
+              </button> */}
+              <button className="btn btn-outline-danger btn-md" onClick={exportVisibleToCSV}>
                 <i className="fas fa-download me-1"></i> Export
               </button>
               <button type="button" className="btn btn-primary btn-md" onClick={toggle}>

@@ -29,6 +29,9 @@ import { useFormik } from "formik";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import DeleteModal from "../../components/Common/DeleteModal";
 import { isEmpty } from "lodash";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewSegment, deleteSegment, getSegments, updateSegment } from "../../store/actions";
+import { ToastContainer } from "react-toastify";
 
 
 const dummySegments = [
@@ -209,10 +212,20 @@ const optionGroup = [
     { label: "3D", value: "3D" }
 ]
 
+const StatusGroup = [
+    { label: "Active", value: "Active" },
+    { label: "Inactive", value: "Inactive" }
+];
+
 const Sagment = () => {
+
     document.title = "Sagments | SNAAP - Radiology & Diagnostic Centers";
 
-    const [segments, setSegments] = useState(dummySegments);
+    const dispatch = useDispatch();
+
+    const segments = useSelector(state => state.segment?.segments || []);
+    const error = useSelector(state => state.segment?.error);
+
     const [selectedSegment, setSelectedSegment] = useState(null);
     const [isEdit, setIsEdit] = useState(false);
     const [segmentInitialValues, setSegmentInitialValues] = useState({
@@ -220,9 +233,7 @@ const Sagment = () => {
         type: optionGroup[0].value,
         name: "",
         description: "",
-        createdBy: "Admin",
-        createdDate: new Date().getTime(),
-        status: "Active",
+        isActive: true,
     });
     const [modal, setModal] = useState(false);
 
@@ -234,22 +245,23 @@ const Sagment = () => {
             type: optionGroup[0].value,
             name: "",
             description: "",
-            createdBy: "Admin",
-            createdDate: new Date().getTime(),
-            status: "Active",
+            isActive: true,
         },
         validationSchema: Yup.object({
             name: Yup.string().required("Segment name is required"),
             // createdDate: Yup.date().required("Created date is required"),
         }),
         onSubmit: (values) => {
-            console.log("values", values)
             if (values.id) {
-                updateSegment(values);
+                dispatch(updateSegment(values));
+
+                console.log("segment", values)
+
             } else {
-                addSegment({ ...values, id: segments?.length + 1 });
+                dispatch(addNewSegment(values))
             }
             setModal(false);
+            validation.resetForm()
         },
     });
 
@@ -281,23 +293,25 @@ const Sagment = () => {
             },
             {
                 Header: "Created By",
-                accessor: "createdBy",
+                accessor: "createdByName",
                 Cell: ({ value }) => <span>{value}</span>,
             },
             {
                 Header: "Status",
-                accessor: "status",
-                Cell: ({ value }) => (
-                    <span
-                        className={`badge bg-${value === "Active" ? "success" : "secondary"}`}
-                    >
-                        {value}
-                    </span>
-                ),
+                accessor: "isActive",
+                Cell: ({ value }) => {
+                    return (
+                        <span
+                            className={`badge bg-${(value == true || value == "true") ? "success" : "secondary"}`}
+                        >
+                            {(value == true || value == "true") ? "Active" : "Inactive"}
+                        </span>
+                    )
+                },
             },
             {
                 Header: "Created At",
-                accessor: "createdDate",
+                accessor: "createdAt",
                 Cell: ({ value }) => (
                     <span className="text-muted small">
                         {new Date(value).toLocaleString("en-US", {
@@ -340,6 +354,9 @@ const Sagment = () => {
         []
     );
 
+    useEffect(() => {
+        dispatch(getSegments());
+    }, [dispatch]);
 
     useEffect(() => {
         setIsEdit(false);
@@ -351,15 +368,6 @@ const Sagment = () => {
         }
     }, [segments]);
 
-    const addSegment = (newSegment) => {
-        setSegments((prev) => [...prev, newSegment]);
-    };
-
-    const updateSegment = (updatedSegment) => {
-        setSegments((prev) =>
-            prev.map((seg) => (seg.id === updatedSegment.id ? updatedSegment : seg))
-        );
-    };
 
 
     const toggle = () => {
@@ -372,9 +380,7 @@ const Sagment = () => {
                 type: optionGroup[0].value,
                 name: "",
                 description: "",
-                createdBy: "Admin",
-                createdDate: new Date().getTime(),
-                status: "Active",
+                isActive: true,
             });
         }
 
@@ -384,9 +390,7 @@ const Sagment = () => {
                 type: optionGroup[0].value,
                 name: "",
                 description: "",
-                createdBy: "Admin",
-                createdDate: new Date().getTime(),
-                status: "Active",
+                isActive: true,
             });
         }
         setModal(!modal);
@@ -422,9 +426,8 @@ const Sagment = () => {
     };
 
     const handleDeleteUser = () => {
-        const filteredsegments = segments.filter(sagment => sagment.id !== selectedSegment);
-        setSegments(filteredsegments);
-        onPaginationPageChange(1);
+        dispatch(deleteSegment(selectedSegment))
+        // onPaginationPageChange(1);
         setDeleteModal(false);
     };
 
@@ -440,7 +443,7 @@ const Sagment = () => {
             <div className="page-content">
                 <Container fluid>
                     {/* Render Breadcrumbs */}
-                    <Breadcrumbs title="Sagments" breadcrumbItem="Sagments" />
+                    <Breadcrumbs title="Segments" breadcrumbItem="Segments" />
                     <Row>
                         <Col lg="12">
 
@@ -448,7 +451,7 @@ const Sagment = () => {
                                 <Col xl="12">
                                     <TableContainer
                                         columns={columns}
-                                        data={segments}
+                                        data={segments?.sort((a, b) => a.id - b.id)}
                                         isGlobalFilter={true}
                                         isAddUserList={true}
                                         customPageSize={10}
@@ -484,7 +487,8 @@ const Sagment = () => {
                                                                     })
                                                                 }
                                                                 options={optionGroup}
-                                                                classNamePrefix="select2-selection"
+                                                                classNamePrefix="custom-select"
+                                                                className="react-select-container"
                                                             />
                                                         </div>
 
@@ -521,55 +525,29 @@ const Sagment = () => {
                                                     </Col>
                                                 </Row>
 
-                                                {/* <Row>
-                                                    <Col md="6">
-                                                        <div className="mb-3">
-                                                            <Label>Created By</Label>
-                                                            <Input
-                                                                name="createdBy"
-                                                                type="text"
-                                                                placeholder="Enter creator name"
-                                                                onChange={validation.handleChange}
-                                                                onBlur={validation.handleBlur}
-                                                                value={validation.values.createdBy}
-                                                                invalid={validation.touched.createdBy && !!validation.errors.createdBy}
-                                                            />
-                                                            <FormFeedback>{validation.errors.createdBy}</FormFeedback>
-                                                        </div>
-                                                    </Col>
 
-                                                    <Col md="6">
-                                                        <div className="mb-3">
-                                                            <Label>Created Date</Label>
-                                                            <Input
-                                                                name="createdDate"
-                                                                type="date"
-                                                                onChange={validation.handleChange}
-                                                                onBlur={validation.handleBlur}
-                                                                value={validation.values.createdDate}
-                                                                invalid={validation.touched.createdDate && !!validation.errors.createdDate}
-                                                            />
-                                                            <FormFeedback>{validation.errors.createdDate}</FormFeedback>
-                                                        </div>
-                                                    </Col>
-                                                </Row> */}
 
                                                 <Row>
                                                     <Col md="6">
                                                         <div className="mb-3">
                                                             <Label>Status</Label>
-                                                            <Input
-                                                                name="status"
-                                                                type="select"
-                                                                onChange={validation.handleChange}
-                                                                onBlur={validation.handleBlur}
-                                                                value={validation.values.status}
-                                                                invalid={validation.touched.status && !!validation.errors.status}
-                                                            >
-                                                                <option value="Active">Active</option>
-                                                                <option value="Inactive">Inactive</option>
-                                                            </Input>
-                                                            <FormFeedback>{validation.errors.status}</FormFeedback>
+                                                            <Select
+                                                                name="isActive"
+                                                                value={{ value: validation.values.isActive ? "Active" : "Inactive", label: validation.values.isActive ? "Active" : "Inactive" }}
+                                                                onChange={(selectedOption) =>
+                                                                    validation.handleChange({
+                                                                        target: {
+                                                                            name: "isActive",
+                                                                            value: selectedOption.value == "Active" ? true : false
+                                                                        }
+                                                                    })
+                                                                }
+                                                                options={StatusGroup}
+                                                                classNamePrefix="custom-select"
+                                                                className="react-select-container"
+                                                            />
+
+                                                            <FormFeedback>{validation.errors.isActive}</FormFeedback>
                                                         </div>
                                                     </Col>
                                                 </Row>
@@ -588,6 +566,9 @@ const Sagment = () => {
                         </Col>
                     </Row>
                 </Container>
+
+                <ToastContainer />
+
             </div>
         </React.Fragment>
     );

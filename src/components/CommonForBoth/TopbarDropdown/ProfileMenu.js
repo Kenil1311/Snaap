@@ -5,17 +5,23 @@ import {
   DropdownToggle,
   DropdownMenu,
 } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 
 //i18n
 import { withTranslation } from "react-i18next";
 // Redux
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 // users
 import user1 from "../../../assets/images/users/avatar-1.jpg";
+import { logoutUser } from "../../../store/actions";
 
 const ProfileMenu = props => {
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+
   // Declare a new state variable, which we'll call "menu"
   const [menu, setMenu] = useState(false);
 
@@ -23,18 +29,14 @@ const ProfileMenu = props => {
 
   useEffect(() => {
     if (localStorage.getItem("authUser")) {
-      if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-        const obj = JSON.parse(localStorage.getItem("authUser"));
-        setusername(obj.displayName);
-      } else if (
-        process.env.REACT_APP_DEFAULTAUTH === "fake" ||
-        process.env.REACT_APP_DEFAULTAUTH === "jwt"
-      ) {
-        const obj = JSON.parse(localStorage.getItem("authUser"));
-        setusername(obj.username);
-      }
+      const obj = JSON.parse(localStorage.getItem("authUser"));
+      setusername(obj.username);
     }
   }, [props.success]);
+
+  const handleLogout = () => {
+    dispatch(logoutUser(navigate));
+  };
 
   return (
     <React.Fragment>
@@ -64,16 +66,16 @@ const ProfileMenu = props => {
           </Link>{" "}
 
           <Link to="/page-lock-screen" className="dropdown-item">
-          <i className="mdi mdi-lock font-size-16 align-middle me-1"></i>
+            <i className="mdi mdi-lock font-size-16 align-middle me-1"></i>
             {props.t("Lock screen")}
           </Link>
 
           <div className="dropdown-divider" />
-          <Link to="/login" className="dropdown-item">
-          <i className="mdi mdi-logout font-size-16 align-middle me-1"></i>
+          <button onClick={handleLogout} className="dropdown-item">
+            <i className="mdi mdi-logout font-size-16 align-middle me-1"></i>
             <span>{props.t("Logout")}</span>
-          </Link>
-          
+          </button>
+
         </DropdownMenu>
       </Dropdown>
     </React.Fragment>

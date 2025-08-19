@@ -1,7 +1,7 @@
 import PropTypes from "prop-types"
 import React, { useState } from "react"
 
-import { Row, Col, Container, Form, Input, FormFeedback, Label } from "reactstrap";
+import { Row, Col, Container, Form, Input, FormFeedback, Label, Alert } from "reactstrap";
 //redux
 import { useSelector, useDispatch } from "react-redux"
 
@@ -26,7 +26,7 @@ import { createSelector } from "reselect";
 const Login = props => {
 
   const [passwordShow, setPasswordShow] = useState(false);
-
+ 
   const dispatch = useDispatch()
 
   const errorData = createSelector(
@@ -44,14 +44,14 @@ const Login = props => {
     enableReinitialize: true,
 
     initialValues: {
-      email: "admin@snaap.com" || '',
-      password: "123456" || '',
+      email: "test123" || '',
+      password: "Demo@123" || '',
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
       password: Yup.string().required("Please Enter Your Password"),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       dispatch(loginUser(values, props.router.navigate));
     }
   });
@@ -95,14 +95,15 @@ const Login = props => {
                           return false;
                         }}
                       >
-                        {/* {error ? <Alert color="danger">{error}</Alert> : null} */}
+                        {error ? <Alert color="danger">{error}</Alert> : null}
+
                         <div className="mb-3">
-                          <Label className="form-label">Email</Label>
+                          <Label className="form-label">Username/Email</Label>
                           <Input
                             name="email"
                             className="form-control"
-                            placeholder="Enter email"
-                            type="email"
+                            placeholder="Enter email or username"
+                            type="test"
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
                             value={validation.values.email || ""}

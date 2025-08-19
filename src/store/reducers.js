@@ -24,6 +24,18 @@ import contacts from "./contacts/reducer"
 //dashboard
 import dashboard from "./Dashboard/reducer"
 
+//branch
+import branch from "./Branch/reducer"
+
+//sagment
+import segment from "./Segment/reducer"
+
+//pathology
+import pathology from "./Pathology/reducer"
+
+//report
+import report from "./Report/reducer"
+
 
 const rootReducer = combineReducers({
   // public
@@ -36,7 +48,11 @@ const rootReducer = combineReducers({
   chat,
   invoices,
   contacts,
-  dashboard
+  dashboard,
+  branch,
+  segment,
+  pathology,
+  report
 })
 
 export default rootReducer

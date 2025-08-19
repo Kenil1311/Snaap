@@ -20,3 +20,15 @@ export * from "./contacts/actions"
 
 //dashboard
 export * from "./Dashboard/actions"
+
+//branch
+export * from "./Branch/actions"
+
+//sagment
+export * from "./Segment/actions"
+
+//pathology
+export * from "./Pathology/actions"
+
+//report
+export * from "./Report/actions"
