@@ -36,6 +36,11 @@ import pathology from "./Pathology/reducer"
 //report
 import report from "./Report/reducer"
 
+// city
+import city from "./City/reducer"
+
+// doctor
+import doctor from "./Doctor/reducer"
 
 const rootReducer = combineReducers({
   // public
@@ -52,7 +57,9 @@ const rootReducer = combineReducers({
   branch,
   segment,
   pathology,
-  report
+  report,
+  city,
+  doctor
 })
 
 export default rootReducer

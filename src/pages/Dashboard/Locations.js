@@ -47,23 +47,27 @@ const Locations = (props) => {
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
 
-                            {branches.map((marker, index) => (
-                                <Marker
-                                    key={index}
-                                    position={[marker.latitude, marker.longitude]}
-                                    eventHandlers={{
-                                        click: () => setSelected(marker),
-                                    }}
-                                >
-                                    <Popup>
-                                        <div style={{ lineHeight: '1.6', fontSize: '14px' }}>
-                                            <div className='mb-2' style={{ fontWeight: 'bold', color: '#556ee6'}}>{marker.name} - {marker.area}</div>
-                                            <div className='mb-2'><strong>📍 Address:</strong>{marker.address_1 + marker.address_2 + marker.city + marker.state + marker.zip + marker.country}</div>
-                                            {marker.phone && (<div><strong> 📞 Phone: </strong> {marker.phone}</div>)}
-                                        </div>
-                                    </Popup>
-                                </Marker>
-                            ))}
+                            {branches.map((marker, index) => {
+                                if (marker?.latitude && marker?.longitude) {
+                                    return (
+                                        <Marker
+                                            key={index}
+                                            position={[marker?.latitude, marker?.longitude]}
+                                            eventHandlers={{
+                                                click: () => setSelected(marker),
+                                            }}
+                                        >
+                                            <Popup>
+                                                <div style={{ lineHeight: '1.6', fontSize: '14px' }}>
+                                                    <div className='mb-2' style={{ fontWeight: 'bold', color: '#556ee6' }}>{marker.name} - {marker.area}</div>
+                                                    <div className='mb-2'><strong>📍 Address:</strong>{marker.address_1 + marker.address_2 + marker.city + marker.state + marker.zip + marker.country}</div>
+                                                    {marker.phone && (<div><strong> 📞 Phone: </strong> {marker.phone}</div>)}
+                                                </div>
+                                            </Popup>
+                                        </Marker>
+                                    )
+                                }
+                            })}
                         </MapContainer>
                     </div>
                 </CardBody>

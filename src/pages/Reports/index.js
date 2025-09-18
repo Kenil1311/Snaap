@@ -31,7 +31,7 @@ import DeleteModal from "../../components/Common/DeleteModal";
 import { isEmpty, set } from "lodash";
 import FilterSidebar from "../../components/Common/FilterSidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteReport, getReports, getSegments } from "../../store/actions";
+import { deleteReport, getBranches, getCity, getDoctor, getReports, getSegments } from "../../store/actions";
 import { ToastContainer } from "react-toastify";
 
 
@@ -44,16 +44,33 @@ const Reports = () => {
 
     const reports = useSelector(state => state.report?.reports || []);
     const error = useSelector(state => state.report?.error);
-    const segments = useSelector(state => state.segment?.segments || []);
-
+    const branches = useSelector(state => state.branch?.branches || []);
+    const doctors = useSelector(state => state.doctor?.doctor || []);
+    const cities = useSelector(state => state.city?.city || []);
 
     const [modal, setModal] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
+    const [city, setCity] = useState(cities)
+    const [doctor, setDoctor] = useState(doctors)
     const [selectedReport, setSelectedReport] = useState(null);
     const [isOpenFillter, setIsOpenFillter] = useState(false);
     const [isFilterAdded, setIsFilterAdded] = useState(false);
     const [selectedFilters, setSelectedFilters] = useState({})
     const [activeFilter, setActiveFilter] = useState(0);
+
+    useEffect(() => {
+        dispatch(getBranches());
+        dispatch(getReports(selectedFilters));
+        dispatch(getSegments());
+        dispatch(getCity());
+        dispatch(getDoctor());
+    }, [dispatch]);
+
+
+    useEffect(() => {
+        setCity(cities)
+        setDoctor(doctors)
+    }, [cities, doctors])
 
     const columns = useMemo(
         () => [
@@ -64,8 +81,8 @@ const Reports = () => {
             },
             {
                 Header: "Branch",
-                accessor: "branch_name",
-                Cell: ({ value }) => <span className="text-wrap" style={{ whiteSpace: "normal" }}>{value}</span>,
+                accessor: "branch",
+                Cell: ({ value }) => <span className="text-wrap" style={{ whiteSpace: "normal" }}>{branches?.find(branch => branch?.id == value)?.area}</span>,
             },
             {
                 Header: "Segment",
@@ -81,6 +98,16 @@ const Reports = () => {
                 Cell: ({ value }) => <span className="fw-semibold text-dark text-wrap" style={{ whiteSpace: "normal" }}>{value}</span>,
             },
             {
+                Header: "Phone",
+                accessor: "phone",
+                Cell: ({ value }) => <span style={{ whiteSpace: "normal" }}>{value}</span>,
+            },
+            {
+                Header: "email",
+                accessor: "email",
+                Cell: ({ value }) => <span style={{ whiteSpace: "normal" }}>{value}</span>,
+            },
+            {
                 Header: "Age",
                 accessor: "age",
                 Cell: ({ value }) => <span>{value}</span>,
@@ -91,10 +118,25 @@ const Reports = () => {
                 Cell: ({ value }) => <span>{value}</span>,
             },
             {
+                Header: "Address",
+                accessor: "address",
+                Cell: ({ value }) => <span>{value}</span>,
+            },
+            {
+                Header: "City",
+                accessor: "city",
+                Cell: ({ value }) => <span>{city?.find(city => city?.id == value)?.name}</span>,
+            },
+            {
+                Header: "Doctor",
+                accessor: "doctor",
+                Cell: ({ value }) => <span>{doctor?.find(doctor => doctor?.id == value)?.name}</span>,
+            },
+            {
                 Header: "Study Date",
                 accessor: "studydate",
                 Cell: ({ value }) => <span><span>
-                    {new Date(Number(value) || value).toLocaleString("en-US", {
+                    {value && new Date(Number(value) || value).toLocaleString("en-US", {
                         year: "numeric",
                         month: "short",
                         day: "numeric",
@@ -113,7 +155,7 @@ const Reports = () => {
                 accessor: "pathologies",
                 Cell: ({ value }) =>
                     value?.map((pathology, index) => (
-                        <span key={index} className={`p-1 me-1`}>{index != value?.length - 1 ?`${pathology?.name}, ` : pathology?.name} </span>
+                        <span key={index} className={`p-1 me-1`}>{index != value?.length - 1 ? `${pathology?.name}, ` : pathology?.name} </span>
                     )),
             },
             {
@@ -148,14 +190,8 @@ const Reports = () => {
                 },
             },
         ],
-        []
+        [branches, city, doctor]
     );
-
-    useEffect(() => {
-        dispatch(getReports(selectedFilters));
-        dispatch(getSegments());
-    }, [dispatch]);
-
 
     useEffect(() => {
         dispatch(getReports(selectedFilters));

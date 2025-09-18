@@ -119,6 +119,8 @@ import AddReport from "../pages/Reports/AddReport";
 import EditReport from "../pages/Reports/EditReport";
 import Reports from "../pages/Reports";
 import Pathology from "../pages/Pathology";
+import City from "../pages/City";
+import Doctor from "../pages/Doctor";
 
 const userRoutes = [
   //dashboard
@@ -131,6 +133,8 @@ const userRoutes = [
   { path: "/edit-branches", component: <EditBranches /> },
   { path: "/segments", component: <Segment /> },
   { path: "/pathology", component: <Pathology /> },
+  { path: "/city", component: <City /> },
+  { path: "/doctor", component: <Doctor /> },
 
   //profile
   { path: "/profile", component: <UserProfile /> },

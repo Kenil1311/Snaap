@@ -1,0 +1,17 @@
+export const GET_CITY = "GET_CITY";
+export const GET_CITY_SUCCESS = "GET_CITY_SUCCESS";
+export const GET_CITY_FAIL = "GET_CITY_FAIL";
+
+export const ADD_NEW_CITY = "ADD_NEW_CITY";
+export const ADD_NEW_CITY_SUCCESS = "ADD_NEW_CITY_SUCCESS";
+export const ADD_NEW_CITY_FAIL = "ADD_NEW_CITY_FAIL";
+
+export const UPDATE_CITY = "UPDATE_CITY";
+export const UPDATE_CITY_SUCCESS = "UPDATE_CITY_SUCCESS";
+export const UPDATE_CITY_FAIL = "UPDATE_CITY_FAIL";
+
+export const DELETE_CITY = "DELETE_CITY";
+export const DELETE_CITY_SUCCESS = "DELETE_CITY_SUCCESS";
+export const DELETE_CITY_FAIL = "DELETE_CITY_FAIL";
+
+export const RESET_CITY_STATE = "RESET_CITY_STATE";

@@ -11,7 +11,7 @@ import Flatpickr from "react-flatpickr"
 import AddNewBranch from './AddNewBranch';
 import AddNewSagment from './AddNewSagment';
 import AddNewPathology from './AddNewPathology';
-import { getBranches, getPathology, getSegments, updateReport } from '../../store/actions';
+import { getBranches, getCity, getDoctor, getPathology, getSegments, updateReport } from '../../store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -33,11 +33,15 @@ export default function EditReport() {
     const branches = useSelector(state => state.branch?.branches || []);
     const segments = useSelector(state => state.segment?.segments || []);
     const pathology = useSelector(state => state.pathology?.pathology || []);
+    const cities = useSelector(state => state.city?.city || []);
+    const doctors = useSelector(state => state.doctor?.doctor || []);
 
     useEffect(() => {
         dispatch(getBranches());
         dispatch(getSegments());
         dispatch(getPathology());
+        dispatch(getCity());
+        dispatch(getDoctor());
     }, [dispatch]);
 
     const branchOptions = Object.values(
@@ -83,6 +87,51 @@ export default function EditReport() {
         }, {})
     );
 
+    const cityOptions = Object.values(
+        cities.reduce((acc, sagment) => {
+
+            if (!sagment.isActive) return acc;
+
+            const type = sagment.type;
+
+            if (!acc[type]) {
+                acc[type] = {
+                    label: type,
+                    options: []
+                };
+            }
+
+            acc[type].options.push({
+                label: sagment.name,
+                value: sagment.id
+            });
+
+            return acc;
+        }, {})
+    );
+
+    const doctorOptions = Object.values(
+        doctors.reduce((acc, sagment) => {
+
+            if (!sagment.isActive) return acc;
+
+            const type = sagment.type;
+
+            if (!acc[type]) {
+                acc[type] = {
+                    label: type,
+                    options: []
+                };
+            }
+
+            acc[type].options.push({
+                label: sagment.name,
+                value: sagment.id
+            });
+
+            return acc;
+        }, {})
+    );
 
     const pathologyOptions = pathology?.filter(item => item.isActive)?.map(sagment => ({
         label: sagment.name,
@@ -90,6 +139,7 @@ export default function EditReport() {
     }));
 
     const initialValues = location.state || {};
+
 
     const validation = useFormik({
         enableReinitialize: true,
@@ -100,6 +150,9 @@ export default function EditReport() {
             email: initialValues?.email,
             gender: initialValues?.gender,
             age: initialValues?.age,
+            address: initialValues?.address,
+            city: initialValues?.city,
+            doctor: initialValues?.doctor,
             studyDate: initialValues?.studydate,
             modality: initialValues?.modality,
             pathology: initialValues?.pathologies?.map(item => ({
@@ -111,7 +164,7 @@ export default function EditReport() {
                 value: item.id,
                 label: item.name
             })),
-            branch: initialValues?.branch_id
+            branch: initialValues?.branch
         },
         validationSchema: Yup.object({
             name: Yup.string().required("Please enter patient name"),
@@ -132,13 +185,14 @@ export default function EditReport() {
                 .min(1, "Please select segment")
                 .required("Please select segment"),
             branch: Yup.string().required("Please select branch"),
+            city: Yup.string().required("Please select city"),
+            doctor: Yup.string().required("Please select doctor"),
         }),
         onSubmit: (values) => {
             const transformed = {
                 id: values.id,
                 age: values.age,
-                branch_id: values.branch,
-                branch_name: branches.find(branch => branch.id == values.branch)?.area, // you can fill this if you have a branch mapping
+                branch: values.branch,
                 description: values.description,
                 email: values.email,
                 gender: values.gender,
@@ -147,7 +201,11 @@ export default function EditReport() {
                 phone: values.phone,
                 studyDate: new Date(values.studyDate).getTime(),
                 pathology_ids: values.pathology?.map(p => (p.value)),
-                segment_ids: values.segment?.map(s => (s.value))
+                segment_ids: values.segment?.map(s => (s.value)),
+                city: values.city,
+                doctor: values.doctor,
+                upload_file: selectedFiles[0],
+                upload_report: selectedReport[0]
             };
             dispatch(updateReport(transformed))
 
@@ -156,25 +214,43 @@ export default function EditReport() {
     });
 
     const [selectedFiles, setselectedFiles] = useState([]);
+    const [selectedReport, setSelectedReport] = useState([]);
     const [isOpenAddNewBranch, setIsOpenAddNewBranch] = useState(false);
     const [isOpenAddNewSagment, setIsOpenAddNewSagment] = useState(false);
     const [isOpenAddNewPathology, setIsOpenAddNewPathology] = useState(false);
 
-    function handleAcceptedFiles(files) {
+    function handleAcceptedFiles(files, type) {
         files.map((file) =>
             Object.assign(file, {
                 preview: URL.createObjectURL(file),
                 formattedSize: formatBytes(file.size),
             })
         );
-        setselectedFiles(files);
+
+        if (type == "report") {
+            setSelectedReport(files)
+        }
+        else {
+            setselectedFiles(files);
+        }
+
     }
 
-    const handleRemoveFile = (index) => {
-        const newFiles = [...selectedFiles];
-        newFiles.splice(index, 1);
-        setselectedFiles(newFiles);
+    const handleRemoveFile = (index, type) => {
+
+        if (type == "report") {
+            const newFiles = [...selectedReport];
+            newFiles.splice(index, 1);
+            setSelectedReport(newFiles);
+        }
+        else {
+            const newFiles = [...selectedFiles];
+            newFiles.splice(index, 1);
+            setselectedFiles(newFiles);
+        }
+
     };
+
 
     function formatBytes(bytes, decimals = 2) {
         if (bytes === 0) return "0 Bytes";
@@ -188,6 +264,22 @@ export default function EditReport() {
 
     const findBranchByValue = (valueToFind) => {
         for (const group of branchOptions) {
+            const found = group.options.find(opt => opt.value === valueToFind);
+            if (found) return found;
+        }
+        return null;
+    };
+
+    const findCityByValue = (valueToFind) => {
+        for (const group of cityOptions) {
+            const found = group.options.find(opt => opt.value === valueToFind);
+            if (found) return found;
+        }
+        return null;
+    };
+
+    const findDoctorByValue = (valueToFind) => {
+        for (const group of doctorOptions) {
             const found = group.options.find(opt => opt.value === valueToFind);
             if (found) return found;
         }
@@ -374,7 +466,7 @@ export default function EditReport() {
                                 </Row>
 
                                 <Row>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <div className="mb-3">
                                             <Label>Phone</Label>
                                             <Input
@@ -388,9 +480,7 @@ export default function EditReport() {
                                             />
                                             <FormFeedback>{validation.errors.phone}</FormFeedback>
                                         </div>
-                                    </Col>
 
-                                    <Col md="4">
                                         <div className="mb-3">
                                             <Label>Email</Label>
                                             <Input
@@ -404,29 +494,144 @@ export default function EditReport() {
                                             />
                                             <FormFeedback>{validation.errors.email}</FormFeedback>
                                         </div>
+
                                     </Col>
 
+                                    <Col md="6">
+                                        <div className="mb-3">
+                                            <Label>Address</Label>
+                                            <Input
+                                                name="address"
+                                                type="textarea"
+                                                rows={5}
+                                                placeholder="Enter address"
+                                                onChange={validation.handleChange}
+                                                onBlur={validation.handleBlur}
+                                                value={validation.values.address}
+                                                invalid={validation.touched.address && !!validation.errors.address}
+                                            />
+                                            <FormFeedback>{validation.errors.address}</FormFeedback>
+                                        </div>
+                                    </Col>
+                                </Row>
+
+                                <Row>
+                                    <Col md="4">
+                                        <div className="mb-3">
+                                            <Label>City</Label>
+                                            <div style={{ display: "flex", alignItems: "center" }}>
+                                                <div style={{ flex: 1 }}>
+                                                    <Select
+                                                        name="city"
+                                                        placeholder="Select city"
+                                                        value={findCityByValue(validation.values.city)}
+                                                        onChange={(selectedOption) =>
+                                                            validation.handleChange({
+                                                                target: {
+                                                                    name: "city",
+                                                                    value: selectedOption.value
+                                                                }
+                                                            })
+                                                        }
+                                                        options={cityOptions}
+                                                        classNamePrefix="custom-select"
+                                                        className="react-select-container"
+                                                    />
+                                                </div>
+
+                                                {/* <div
+                                                    style={{
+                                                        flex: "0 0 5%",
+                                                        display: "flex",
+                                                        justifyContent: "center",
+                                                        alignItems: "center",
+                                                        cursor: "pointer"
+                                                    }}
+                                                    className="bordered icon-btn"
+                                                    onClick={() => setIsOpenAddNewBranch(true)}
+                                                >
+                                                    <i className="fas fa-circle-plus" style={{ fontSize: 24 }} />
+                                                </div> */}
+                                            </div>
+
+
+                                            {validation.touched.gender && validation.errors.gender && (
+                                                <div className="invalid-feedback d-block">
+                                                    {validation.errors.gender}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                    </Col>
+
+                                    <Col md="4">
+                                        <div className="mb-3">
+                                            <Label>Doctor</Label>
+                                            <div style={{ display: "flex", alignItems: "center" }}>
+                                                <div style={{ flex: 1 }}>
+                                                    <Select
+                                                        name="doctor"
+                                                        placeholder="Select doctor"
+                                                        value={findDoctorByValue(validation.values.doctor)}
+                                                        onChange={(selectedOption) =>
+                                                            validation.handleChange({
+                                                                target: {
+                                                                    name: "doctor",
+                                                                    value: selectedOption.value
+                                                                }
+                                                            })
+                                                        }
+                                                        options={doctorOptions}
+                                                        classNamePrefix="custom-select"
+                                                        className="react-select-container"
+                                                    />
+                                                </div>
+
+                                                {/* <div
+                                                    style={{
+                                                        flex: "0 0 5%",
+                                                        display: "flex",
+                                                        justifyContent: "center",
+                                                        alignItems: "center",
+                                                        cursor: "pointer"
+                                                    }}
+                                                    className="bordered icon-btn"
+                                                    onClick={() => setIsOpenAddNewBranch(true)}
+                                                >
+                                                    <i className="fas fa-circle-plus" style={{ fontSize: 24 }} />
+                                                </div> */}
+                                            </div>
+
+
+                                            {validation.touched.gender && validation.errors.gender && (
+                                                <div className="invalid-feedback d-block">
+                                                    {validation.errors.gender}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                    </Col>
 
                                     <Col md="4">
                                         <div className="mb-3">
                                             <Label>Study Date</Label>
-                                            <InputGroup>
-                                                <Flatpickr
-                                                    className="form-control d-block"
-                                                    placeholder="Select study date"
-                                                    options={{
-                                                        altInput: true,
-                                                        altFormat: "F j, Y",
-                                                        dateFormat: "Y-m-d"
-                                                    }}
-                                                    value={validation.values.studyDate}
-                                                    onChange={(date) => {
-                                                        validation.setFieldValue("studyDate", date[0]);
-                                                    }}
-                                                    invalid={validation.touched.studyDate && !!validation.errors.studyDate}
-                                                />
+                                            {/* <InputGroup> */}
+                                            <Flatpickr
+                                                className="form-control d-block"
+                                                placeholder="Mon dd, yyyy"
+                                                options={{
+                                                    altInput: true,
+                                                    altFormat: "F j, Y",
+                                                    dateFormat: "Y-m-d"
+                                                }}
+                                                onChange={(date) => {
 
-                                            </InputGroup>
+                                                    validation.setFieldValue("studyDate", date[0]);
+                                                }}
+                                                invalid={validation.touched.studyDate && !!validation.errors.studyDate}
+                                            />
+
+                                            {/* </InputGroup> */}
                                             <FormFeedback>{validation.errors.studyDate}</FormFeedback>
                                         </div>
                                     </Col>
@@ -488,7 +693,7 @@ export default function EditReport() {
                                     <Col md="6">
                                         <div className="mb-3">
                                             <Label>Upload File(DICOM/OPG)</Label>
-                                            <Dropzone onDrop={handleAcceptedFiles}>
+                                            <Dropzone onDrop={(file) => handleAcceptedFiles(file, "file")}>
                                                 {({ getRootProps, getInputProps }) => (
                                                     <div
                                                         className="dropzone p-3 border rounded"
@@ -535,7 +740,7 @@ export default function EditReport() {
                                                                         <button
                                                                             type="button"
                                                                             className="btn btn-sm btn-outline-danger"
-                                                                            onClick={() => handleRemoveFile(i)}
+                                                                            onClick={() => handleRemoveFile(i, "file")}
                                                                         >
                                                                             <i className="bx bx-trash" />
                                                                         </button>
@@ -571,7 +776,7 @@ export default function EditReport() {
                                     <Col md="6">
                                         <div className="mb-3">
                                             <Label>Upload Report</Label>
-                                            <Dropzone onDrop={handleAcceptedFiles}>
+                                            <Dropzone onDrop={(file) => handleAcceptedFiles(file, "report")}>
                                                 {({ getRootProps, getInputProps }) => (
                                                     <div
                                                         className="dropzone p-3 border rounded"
@@ -585,7 +790,7 @@ export default function EditReport() {
                                                         }}
                                                     >
                                                         <input {...getInputProps()} />
-                                                        {selectedFiles.length === 0 ? (
+                                                        {selectedReport.length === 0 ? (
                                                             <div {...getRootProps()}>
                                                                 <div className="mb-2">
                                                                     <i className="display-4 text-muted bx bx-cloud-upload" />
@@ -594,7 +799,7 @@ export default function EditReport() {
                                                             </div>
                                                         ) : (
                                                             <div className="w-100">
-                                                                {selectedFiles.map((f, i) => (
+                                                                {selectedReport.map((f, i) => (
                                                                     <div
                                                                         key={i}
                                                                         className="p-2 border rounded d-flex align-items-center justify-content-between mb-2"
@@ -618,7 +823,7 @@ export default function EditReport() {
                                                                         <button
                                                                             type="button"
                                                                             className="btn btn-sm btn-outline-danger"
-                                                                            onClick={() => handleRemoveFile(i)}
+                                                                            onClick={() => handleRemoveFile(i, "report")}
                                                                         >
                                                                             <i className="bx bx-trash" />
                                                                         </button>

@@ -32,3 +32,9 @@ export * from "./Pathology/actions"
 
 //report
 export * from "./Report/actions"
+
+//city
+export * from "./City/actions"
+
+//doctor
+export * from "./Doctor/actions"

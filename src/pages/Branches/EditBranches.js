@@ -7,6 +7,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { isEmpty } from "lodash";
 import { updateBranch } from '../../store/Branch/actions';
 import { useDispatch } from 'react-redux';
+import Select from "react-select"
 
 const branchesData = [
     {
@@ -151,6 +152,10 @@ const branchesData = [
     }
 ];
 
+const StatusGroup = [
+    { label: "Active", value: "Active" },
+    { label: "Inactive", value: "Inactive" }
+];
 
 export default function EditBranches() {
 
@@ -176,28 +181,29 @@ export default function EditBranches() {
             city: "",
             state: "",
             zip: "",
+            isactive: "",
             country: "",
             latitude: "",
             longitude: "",
         },
         validationSchema: Yup.object({
-            name: Yup.string().required("Please enter branch name"),
-            area: Yup.string().required("Please enter area name"),
-            email: Yup.string().email("Invalid email").required("Email is required").optional(),
-            phone: Yup.string()
-                .nullable()
-                .matches(/^[-+]?\d*$/, "Phone number must be numeric"),
-            address_1: Yup.string().required("Address 1 is required"),
-            city: Yup.string().required("City is required"),
-            state: Yup.string().required("State is required"),
-            zip: Yup.string().required("Zip code is required"),
-            country: Yup.string().required("Country is required"),
-            latitude: Yup.string()
-                .nullable()
-                .matches(/^[-+]?\d*\.?\d*$/, 'Latitude must be a number'),
-            longitude: Yup.string()
-                .nullable()
-                .matches(/^[-+]?\d*\.?\d*$/, 'Longitude must be a number')
+            // name: Yup.string().required("Please enter branch name"),
+            // area: Yup.string().required("Please enter area name"),
+            // email: Yup.string().email("Invalid email").required("Email is required").optional(),
+            // phone: Yup.string()
+            //     .nullable()
+            //     .matches(/^[-+]?\d*$/, "Phone number must be numeric"),
+            // address_1: Yup.string().required("Address 1 is required"),
+            // city: Yup.string().required("City is required"),
+            // state: Yup.string().required("State is required"),
+            // zip: Yup.string().required("Zip code is required"),
+            // country: Yup.string().required("Country is required"),
+            // latitude: Yup.string()
+            //     .nullable()
+            //     .matches(/^[-+]?\d*\.?\d*$/, 'Latitude must be a number'),
+            // longitude: Yup.string()
+            //     .nullable()
+            //     .matches(/^[-+]?\d*\.?\d*$/, 'Longitude must be a number')
         }),
         onSubmit: (values) => {
             const data = {
@@ -211,9 +217,11 @@ export default function EditBranches() {
                 "city": values?.city?.trim(),
                 "state": values?.state?.trim(),
                 "zip": values?.zip?.trim(),
+                "isActive": values?.isactive,
                 "country": values?.country?.trim(),
                 "latitude": values?.latitude,
-                "longitude": values?.longitude
+                "longitude": values?.longitude,
+
             }
 
             dispatch(updateBranch(data));
@@ -490,6 +498,27 @@ export default function EditBranches() {
                                         </div>
                                     </Col>
 
+                                    <Col md="6">
+                                        <div className="mb-3">
+                                            <Label>Status</Label>
+                                            <Select
+                                                name="isActive"
+                                                value={{ value: validation.values.isactive == true ? "Active" : "Inactive", label: validation.values.isactive == true ? "Active" : "Inactive" }}
+                                                onChange={(selectedOption) =>
+                                                    validation.handleChange({
+                                                        target: {
+                                                            name: "isactive",
+                                                            value: selectedOption.value == "Active" ? true : false
+                                                        }
+                                                    })
+                                                }
+                                                options={StatusGroup}
+                                                classNamePrefix="custom-select"
+                                                className="react-select-container"
+                                            />
+                                            <FormFeedback>{validation.errors.isactive}</FormFeedback>
+                                        </div>
+                                    </Col>
                                 </Row>
 
                                 <div className="d-flex justify-content-end gap-3 mt-3">

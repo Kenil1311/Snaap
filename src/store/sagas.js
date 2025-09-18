@@ -16,6 +16,8 @@ import branchSaga from "./Branch/saga"
 import segmentSaga from "./Segment/saga"
 import pathologySaga from "./Pathology/saga"
 import reportSaga from "./Report/saga"
+import citySaga from "./City/saga"
+import doctorSaga from "./Doctor/saga"
 
 export default function* rootSaga() {
   yield all([
@@ -33,6 +35,8 @@ export default function* rootSaga() {
     fork(branchSaga),
     fork(segmentSaga),
     fork(pathologySaga),
-    fork(reportSaga)
+    fork(reportSaga),
+    fork(citySaga),
+    fork(doctorSaga)
   ])
 }

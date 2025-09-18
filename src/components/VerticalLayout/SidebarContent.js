@@ -190,6 +190,16 @@ const SidebarContent = props => {
                     Pathology
                   </Link>
                 </li>
+                <li>
+                  <Link to="/city">
+                    City
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/doctor">
+                    Doctor
+                  </Link>
+                </li>
               </ul>
             </li>
 

@@ -20,6 +20,7 @@ import {
 import { get, post, put as putApi, del } from "../../helpers/api_helper";
 import { toast } from 'react-toastify';
 import qs from "qs";
+import { toFormData } from "../../helpers/formDataHelper";
 
 // API endpoints
 const GET_REPORTS_API = "/report";
@@ -47,7 +48,10 @@ function* fetchReports({ payload: filters }) {
 
 function* onAddNewReport({ payload: report }) {
     try {
-        const response = yield call(post, ADD_REPORT_API, report);
+        const formData = toFormData(report);
+        const response = yield call(post, ADD_REPORT_API, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
         if (response?.status) {
             yield put(addNewReportSuccess(response?.data));
             toast.success(response?.message);
@@ -65,7 +69,7 @@ function* onAddNewReport({ payload: report }) {
 function* onUpdateReport({ payload: report }) {
     try {
         const response = yield call(putApi, UPDATE_REPORT_API(report?.id), report);
-        
+
         console.log(response)
         if (response?.status) {
             yield put(updateReportSuccess(response?.data));
