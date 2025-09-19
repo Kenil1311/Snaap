@@ -33,6 +33,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteBranch, getBranches } from "../../store/Branch/actions";
 import { toast, ToastContainer } from "react-toastify";
 import UploadFileModel from "../../components/Common/UploadFileModel";
+import { getCity } from "../../store/actions";
 
 
 
@@ -42,10 +43,13 @@ const Branches = () => {
     const dispatch = useDispatch();
 
     const branches = useSelector(state => state.branch?.branches || []);
+    const cities = useSelector(state => state.city?.city || []);
+
     const error = useSelector(state => state.branch?.error);
 
     useEffect(() => {
         dispatch(getBranches());
+        dispatch(getCity())
     }, [dispatch]);
 
 
@@ -157,7 +161,7 @@ const Branches = () => {
             {
                 Header: "City",
                 accessor: "city",
-                Cell: ({ value }) => <span>{value}</span>,
+                Cell: ({ value }) => <span>{cities?.find(city => city?.id == value)?.name}</span>,
             },
             {
                 Header: "State",
@@ -210,7 +214,7 @@ const Branches = () => {
                 },
             },
         ],
-        []
+        [cities]
     );
 
     useEffect(() => {

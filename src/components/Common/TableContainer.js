@@ -113,19 +113,20 @@ const TableContainer = ({
 
   const exportVisibleToCSV = () => {
     if (!page || page.length === 0) return;
-    const headers = page[0].cells.map(cell => cell.column.Header || cell.column.id);
+    // const headers = page[0].cells.map(cell => cell.column.Header || cell.column.id);
+
+    const data = headerGroups[0]?.headers[0]?.preFilteredRows.map(row => row.original) || [];
+
+    const headers = data.length > 0 ? Object.keys(data[0]) : [];
+
     const csvRows = [
-      headers.join(","),
-      ...page.map(row =>
-        row.cells
-          .map(cell => {
-            if (cell.column.id === "address") {
-              const address1 = row.original.address_1 || "";
-              const address2 = row.original.address_2 || "";
-              const fullAddress = `${address1} ${address2}`.trim().replace(/\s+/g, " ");
-              return `"${fullAddress.replace(/"/g, '""')}"`;
-            }
-            return `"${(cell.value ?? "").toString().replace(/"/g, '""')}"`;
+      headers.join(","), // header row
+      ...data.map(row =>
+        headers
+          .map(header => {
+            const cellValue = row[header] ?? "";
+            // Escape double quotes
+            return `"${cellValue.toString().replace(/"/g, '""')}"`;
           })
           .join(",")
       )

@@ -194,7 +194,7 @@ const City = () => {
             />
             <div className="page-content">
                 <Container fluid>
-                    <Breadcrumbs title="City" breadcrumbItem="City" />
+                    <Breadcrumbs title="Cities" breadcrumbItem="Cities" />
                     <Row>
                         <Col lg="12">
                             <Row>

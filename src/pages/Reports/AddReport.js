@@ -283,7 +283,7 @@ export default function AddReport() {
                                         <div className="mb-3">
                                             <Label>Branch</Label>
                                             <div style={{ display: "flex", alignItems: "center" }}>
-                                                <div style={{ flex: "0 0 95%" }}>
+                                                <div style={{ flex: "0 0 90%" }}>
                                                     <Select
                                                         name="branch"
                                                         placeholder="Select Branch"
@@ -304,7 +304,7 @@ export default function AddReport() {
 
                                                 <div
                                                     style={{
-                                                        flex: "0 0 5%",
+                                                        flex: "0 0 10%",
                                                         display: "flex",
                                                         justifyContent: "center",
                                                         alignItems: "center",
@@ -331,7 +331,7 @@ export default function AddReport() {
                                         <div className="mb-3">
                                             <Label>Segment</Label>
                                             <div style={{ display: "flex", alignItems: "center" }}>
-                                                <div style={{ flex: "0 0 95%" }}>
+                                                <div style={{ flex: "0 0 90%" }}>
                                                     <Select
                                                         name="segment"
                                                         placeholder="Select segment"
@@ -350,7 +350,7 @@ export default function AddReport() {
                                                 </div>
                                                 <div
                                                     style={{
-                                                        flex: "0 0 5%",
+                                                        flex: "0 0 10%",
                                                         display: "flex",
                                                         justifyContent: "center",
                                                         alignItems: "center",
@@ -526,9 +526,9 @@ export default function AddReport() {
                                             </div>
 
 
-                                            {validation.touched.gender && validation.errors.gender && (
+                                            {validation.touched.city && validation.errors.city && (
                                                 <div className="invalid-feedback d-block">
-                                                    {validation.errors.gender}
+                                                    {validation.errors.city}
                                                 </div>
                                             )}
                                         </div>
@@ -574,9 +574,9 @@ export default function AddReport() {
                                             </div>
 
 
-                                            {validation.touched.gender && validation.errors.gender && (
+                                            {validation.touched.doctor && validation.errors.doctor && (
                                                 <div className="invalid-feedback d-block">
-                                                    {validation.errors.gender}
+                                                    {validation.errors.doctor}
                                                 </div>
                                             )}
                                         </div>
@@ -628,7 +628,7 @@ export default function AddReport() {
                                         <div className="mb-3">
                                             <Label>Pathology</Label>
                                             <div style={{ display: "flex", alignItems: "center" }}>
-                                                <div style={{ flex: "0 0 95%" }}>
+                                                <div style={{ flex: "0 0 90%" }}>
                                                     <Select
                                                         name="pathology"
                                                         placeholder="Select Pathology"
@@ -644,7 +644,7 @@ export default function AddReport() {
                                                 </div>
                                                 <div
                                                     style={{
-                                                        flex: "0 0 5%",
+                                                        flex: "0 0 10%",
                                                         display: "flex",
                                                         justifyContent: "center",
                                                         alignItems: "center",

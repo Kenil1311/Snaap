@@ -6,151 +6,9 @@ import * as Yup from "yup";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { isEmpty } from "lodash";
 import { updateBranch } from '../../store/Branch/actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Select from "react-select"
-
-const branchesData = [
-    {
-        id: 1,
-        branchName: "Mumbai Central Branch",
-        phone: "+91 9820456789",
-        email: "mumbai.central@example.com",
-        address1: "123 Marine Drive",
-        address2: "Opp. Churchgate Station",
-        city: "Mumbai",
-        state: "Maharashtra",
-        zip: "400020",
-        country: "India",
-        latitude: "18.9388",
-        longitude: "72.8354"
-    },
-    {
-        id: 2,
-        branchName: "Bangalore Tech Park",
-        phone: "+91 9988776655",
-        email: "blore.tech@example.com",
-        address1: "Sigma Soft Tech Park",
-        address2: "Whitefield Main Road",
-        city: "Bengaluru",
-        state: "Karnataka",
-        zip: "560066",
-        country: "India",
-        latitude: "12.9716",
-        longitude: "77.5946"
-    },
-    {
-        id: 3,
-        branchName: "Chennai Office",
-        phone: "+91 9876543210",
-        email: "chennai.office@example.com",
-        address1: "Old No. 12, New No. 45",
-        address2: "Mount Road",
-        city: "Chennai",
-        state: "Tamil Nadu",
-        zip: "600002",
-        country: "India",
-        latitude: "13.0827",
-        longitude: "80.2707"
-    },
-    {
-        id: 4,
-        branchName: "Hyderabad Hub",
-        phone: "+91 9012345678",
-        email: "hyd.hub@example.com",
-        address1: "Mindspace IT Park",
-        address2: "Hitech City",
-        city: "Hyderabad",
-        state: "Telangana",
-        zip: "500081",
-        country: "India",
-        latitude: "17.3850",
-        longitude: "78.4867"
-    },
-    {
-        id: 5,
-        branchName: "Delhi NCR Branch",
-        phone: "+91 8447001122",
-        email: "delhi.ncr@example.com",
-        address1: "DLF Cyber City",
-        address2: "Sector 24",
-        city: "Gurugram",
-        state: "Haryana",
-        zip: "122002",
-        country: "India",
-        latitude: "28.4595",
-        longitude: "77.0266"
-    },
-    {
-        id: 6,
-        branchName: "Pune Corporate Office",
-        phone: "+91 9561234567",
-        email: "pune.corp@example.com",
-        address1: "EON IT Park",
-        address2: "Kharadi",
-        city: "Pune",
-        state: "Maharashtra",
-        zip: "411014",
-        country: "India",
-        latitude: "18.5524",
-        longitude: "73.9409"
-    },
-    {
-        id: 7,
-        branchName: "Ahmedabad Support Center",
-        phone: "+91 9324567890",
-        email: "ahm.support@example.com",
-        address1: "S.G. Highway",
-        address2: "Thaltej",
-        city: "Ahmedabad",
-        state: "Gujarat",
-        zip: "380059",
-        country: "India",
-        latitude: "23.0225",
-        longitude: "72.5714"
-    },
-    {
-        id: 8,
-        branchName: "Kolkata Branch",
-        phone: "+91 9090909090",
-        email: "kolkata.branch@example.com",
-        address1: "Salt Lake Sector V",
-        address2: "Near Wipro",
-        city: "Kolkata",
-        state: "West Bengal",
-        zip: "700091",
-        country: "India",
-        latitude: "22.5726",
-        longitude: "88.3639"
-    },
-    {
-        id: 9,
-        branchName: "Jaipur Office",
-        phone: "+91 9812312345",
-        email: "jaipur.office@example.com",
-        address1: "C-Scheme",
-        address2: "Ashok Marg",
-        city: "Jaipur",
-        state: "Rajasthan",
-        zip: "302001",
-        country: "India",
-        latitude: "26.9124",
-        longitude: "75.7873"
-    },
-    {
-        id: 10,
-        branchName: "Lucknow Regional Center",
-        phone: "+91 9456781234",
-        email: "lucknow.rc@example.com",
-        address1: "Gomti Nagar",
-        address2: "Vibhuti Khand",
-        city: "Lucknow",
-        state: "Uttar Pradesh",
-        zip: "226010",
-        country: "India",
-        latitude: "26.8467",
-        longitude: "80.9462"
-    }
-];
+import { getCity } from '../../store/actions';
 
 const StatusGroup = [
     { label: "Active", value: "Active" },
@@ -163,6 +21,36 @@ export default function EditBranches() {
     const dispatch = useDispatch();
 
     document.title = "Edit Branch | SNAAP - Radiology & Diagnostic Centers";
+
+    const cities = useSelector(state => state.city?.city || []);
+
+
+    useEffect(() => {
+        dispatch(getCity());
+    }, [dispatch]);
+
+    const cityOptions = Object.values(
+        cities.reduce((acc, sagment) => {
+
+            if (!sagment.isActive) return acc;
+
+            const type = sagment.type;
+
+            if (!acc[type]) {
+                acc[type] = {
+                    label: type,
+                    options: []
+                };
+            }
+
+            acc[type].options.push({
+                label: sagment.name,
+                value: sagment.id
+            });
+
+            return acc;
+        }, {})
+    );
 
     const location = useLocation();
     const initialValues = location.state || {};
@@ -257,6 +145,13 @@ export default function EditBranches() {
         country.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    const findCityByValue = (valueToFind) => {
+        for (const group of cityOptions) {
+            const found = group.options.find(opt => opt.value === valueToFind);
+            if (found) return found;
+        }
+        return null;
+    };
 
     return (
         <React.Fragment>
@@ -377,16 +272,47 @@ export default function EditBranches() {
                                     <Col md="4">
                                         <div className="mb-3">
                                             <Label>City</Label>
-                                            <Input
-                                                name="city"
-                                                type="text"
-                                                placeholder="Enter city"
-                                                onChange={validation.handleChange}
-                                                onBlur={validation.handleBlur}
-                                                value={validation.values.city}
-                                                invalid={validation.touched.city && !!validation.errors.city}
-                                            />
-                                            <FormFeedback>{validation.errors.city}</FormFeedback>
+                                            <div style={{ display: "flex", alignItems: "center" }}>
+                                                <div style={{ flex: 1 }}>
+                                                    <Select
+                                                        name="city"
+                                                        placeholder="Select city"
+                                                        value={cityOptions.find(opt => opt.value === validation.values.city)}
+                                                        onChange={(selectedOption) =>
+                                                            validation.handleChange({
+                                                                target: {
+                                                                    name: "city",
+                                                                    value: selectedOption.value
+                                                                }
+                                                            })
+                                                        }
+                                                        options={cityOptions}
+                                                        classNamePrefix="custom-select"
+                                                        className="react-select-container"
+                                                    />
+                                                </div>
+
+                                                {/* <div
+                                                    style={{
+                                                        flex: "0 0 5%",
+                                                        display: "flex",
+                                                        justifyContent: "center",
+                                                        alignItems: "center",
+                                                        cursor: "pointer"
+                                                    }}
+                                                    className="bordered icon-btn"
+                                                    onClick={() => setIsOpenAddNewBranch(true)}
+                                                >
+                                                    <i className="fas fa-circle-plus" style={{ fontSize: 24 }} />
+                                                </div> */}
+                                            </div>
+
+
+                                            {validation.touched.city && validation.errors.city && (
+                                                <div className="invalid-feedback d-block">
+                                                    {validation.errors.city}
+                                                </div>
+                                            )}
                                         </div>
                                     </Col>
                                     <Col md="4">

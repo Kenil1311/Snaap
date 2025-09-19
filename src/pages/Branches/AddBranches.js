@@ -6,7 +6,8 @@ import * as Yup from "yup";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import Select from "react-select"
 import { addNewBranch } from '../../store/Branch/actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCity } from '../../store/actions';
 
 
 
@@ -17,6 +18,35 @@ export default function AddBranches() {
 
     document.title = "Add Branch | SNAAP - Radiology & Diagnostic Centers";
 
+    const cities = useSelector(state => state.city?.city || []);
+
+
+    useEffect(() => {
+        dispatch(getCity());
+    }, [dispatch]);
+
+    const cityOptions = Object.values(
+        cities.reduce((acc, sagment) => {
+
+            if (!sagment.isActive) return acc;
+
+            const type = sagment.type;
+
+            if (!acc[type]) {
+                acc[type] = {
+                    label: type,
+                    options: []
+                };
+            }
+
+            acc[type].options.push({
+                label: sagment.name,
+                value: sagment.id
+            });
+
+            return acc;
+        }, {})
+    );
 
     // validation
     const validation = useFormik({
@@ -98,7 +128,6 @@ export default function AddBranches() {
         { label: "🇦🇷 Argentina", value: "Argentina" },
         { label: "🇸🇬 Singapore", value: "Singapore" }
     ];
-
 
     return (
         <React.Fragment>
@@ -219,16 +248,47 @@ export default function AddBranches() {
                                     <Col md="4">
                                         <div className="mb-3">
                                             <Label>City</Label>
-                                            <Input
-                                                name="city"
-                                                type="text"
-                                                placeholder="Enter city"
-                                                onChange={validation.handleChange}
-                                                onBlur={validation.handleBlur}
-                                                value={validation.values.city}
-                                                invalid={validation.touched.city && !!validation.errors.city}
-                                            />
-                                            <FormFeedback>{validation.errors.city}</FormFeedback>
+                                            <div style={{ display: "flex", alignItems: "center" }}>
+                                                <div style={{ flex: 1 }}>
+                                                    <Select
+                                                        name="city"
+                                                        placeholder="Select city"
+                                                        value={cityOptions.find(opt => opt.value === validation.values.city)}
+                                                        onChange={(selectedOption) =>
+                                                            validation.handleChange({
+                                                                target: {
+                                                                    name: "city",
+                                                                    value: selectedOption.value
+                                                                }
+                                                            })
+                                                        }
+                                                        options={cityOptions}
+                                                        classNamePrefix="custom-select"
+                                                        className="react-select-container"
+                                                    />
+                                                </div>
+
+                                                {/* <div
+                                                    style={{
+                                                        flex: "0 0 5%",
+                                                        display: "flex",
+                                                        justifyContent: "center",
+                                                        alignItems: "center",
+                                                        cursor: "pointer"
+                                                    }}
+                                                    className="bordered icon-btn"
+                                                    onClick={() => setIsOpenAddNewBranch(true)}
+                                                >
+                                                    <i className="fas fa-circle-plus" style={{ fontSize: 24 }} />
+                                                </div> */}
+                                            </div>
+
+
+                                            {validation.touched.city && validation.errors.city && (
+                                                <div className="invalid-feedback d-block">
+                                                    {validation.errors.city}
+                                                </div>
+                                            )}
                                         </div>
                                     </Col>
                                     <Col md="4">

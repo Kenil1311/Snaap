@@ -164,7 +164,7 @@ const Doctor = () => {
             />
             <div className="page-content">
                 <Container fluid>
-                    <Breadcrumbs title="Doctor" breadcrumbItem="Doctor" />
+                    <Breadcrumbs title="Doctors" breadcrumbItem="Doctors" />
                     <Row>
                         <Col lg="12">
                             <TableContainer

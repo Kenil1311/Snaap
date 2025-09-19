@@ -1,15 +1,22 @@
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select"
 import * as Yup from "yup";
 import { Button, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Form, FormFeedback, Input, Label, Row, UncontrolledDropdown } from 'reactstrap'
-import { addNewBranch } from "../../store/actions";
-import { useDispatch } from "react-redux";
+import { addNewBranch, getCity } from "../../store/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const AddNewBranch = ({ isOpen, onClose, onApply }) => {
 
     const dispatch = useDispatch();
+
+    const cities = useSelector(state => state.city?.city || []);
+
+
+    useEffect(() => {
+        dispatch(getCity());
+    }, [dispatch]);
 
     const validation = useFormik({
         enableReinitialize: true,
@@ -82,6 +89,29 @@ const AddNewBranch = ({ isOpen, onClose, onApply }) => {
         { label: "🇦🇷 Argentina", value: "Argentina" },
         { label: "🇸🇬 Singapore", value: "Singapore" }
     ];
+
+    const cityOptions = Object.values(
+        cities.reduce((acc, sagment) => {
+
+            if (!sagment.isActive) return acc;
+
+            const type = sagment.type;
+
+            if (!acc[type]) {
+                acc[type] = {
+                    label: type,
+                    options: []
+                };
+            }
+
+            acc[type].options.push({
+                label: sagment.name,
+                value: sagment.id
+            });
+
+            return acc;
+        }, {})
+    );
 
     const clearFilters = () => {
         onClose();
@@ -235,16 +265,47 @@ const AddNewBranch = ({ isOpen, onClose, onApply }) => {
                                         <Col md="12">
                                             <div className="mb-3">
                                                 <Label>City</Label>
-                                                <Input
-                                                    name="city"
-                                                    type="text"
-                                                    placeholder="Enter city"
-                                                    onChange={validation.handleChange}
-                                                    onBlur={validation.handleBlur}
-                                                    value={validation.values.city}
-                                                    invalid={validation.touched.city && !!validation.errors.city}
-                                                />
-                                                <FormFeedback>{validation.errors.city}</FormFeedback>
+                                                <div style={{ display: "flex", alignItems: "center" }}>
+                                                    <div style={{ flex: 1 }}>
+                                                        <Select
+                                                            name="city"
+                                                            placeholder="Select city"
+                                                            value={cityOptions.find(opt => opt.value === validation.values.city)}
+                                                            onChange={(selectedOption) =>
+                                                                validation.handleChange({
+                                                                    target: {
+                                                                        name: "city",
+                                                                        value: selectedOption.value
+                                                                    }
+                                                                })
+                                                            }
+                                                            options={cityOptions}
+                                                            classNamePrefix="custom-select"
+                                                            className="react-select-container"
+                                                        />
+                                                    </div>
+
+                                                    {/* <div
+                                                    style={{
+                                                        flex: "0 0 5%",
+                                                        display: "flex",
+                                                        justifyContent: "center",
+                                                        alignItems: "center",
+                                                        cursor: "pointer"
+                                                    }}
+                                                    className="bordered icon-btn"
+                                                    onClick={() => setIsOpenAddNewBranch(true)}
+                                                >
+                                                    <i className="fas fa-circle-plus" style={{ fontSize: 24 }} />
+                                                </div> */}
+                                                </div>
+
+
+                                                {validation.touched.city && validation.errors.city && (
+                                                    <div className="invalid-feedback d-block">
+                                                        {validation.errors.city}
+                                                    </div>
+                                                )}
                                             </div>
                                         </Col>
                                         <Col md="12">
